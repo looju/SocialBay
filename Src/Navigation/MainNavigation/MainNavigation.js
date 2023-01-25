@@ -4,7 +4,7 @@ import { AccountNavigation } from "../AccountNavigation/AccountNavigation";
 import { AppNavigation } from "../AppNavigation/AppNavigation";
 
 export const MainNavigation = () => {
-  const user=false
+  const user=true
 
 return user? <AccountNavigation/> : <AppNavigation/>;
 };
