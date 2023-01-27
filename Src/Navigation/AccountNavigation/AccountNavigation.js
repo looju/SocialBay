@@ -7,7 +7,7 @@ const Stack = createStackNavigator();
 export const AccountNavigation = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="Login" component={LoginScreen}  options={{}}/>
     </Stack.Navigator>
   );
 };
