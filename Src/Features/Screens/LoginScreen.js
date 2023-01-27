@@ -28,7 +28,7 @@ export const LoginScreen = () => {
   const recaptchaVerifier = useRef(null);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [inputCode, setInputCode] = useState("");
-  const [loading,setLoading]=useState(null)
+  const [loading,setLoading]=useState(false)
   const [verificationId, setVerificationId] = useState(null);
   const [user, setUser] = useState(null);
   const [message, setMessage] = useState(null);
@@ -84,6 +84,12 @@ export const LoginScreen = () => {
           <Text style={styles.messageText}>hi</Text>
         </View>
       )}
+       {loading && (
+        <View style={styles.message}>
+         <ActivityIndicator size={25} color="#ff5349"/>
+        </View>
+      )}
+
 
       <View style={styles.inputView}>
         <TextInput
