@@ -6,12 +6,19 @@ import {
   TouchableOpacity,
   StyleSheet,
   Dimensions,
-  ActivityIndicator
+  ActivityIndicator,
 } from "react-native";
+import {
+  CodeField,
+  Cursor,
+  useBlurOnFulfill,
+  useClearByFocusCell,
+} from "react-native-confirmation-code-field";
+import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { AuthContext } from "../../Services/Auth/Auth";
 import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
 import { firebaseConfig } from "../../Services/Config/Config";
-import { PhoneAuthProvider } from "firebase/auth";
+import { PhoneAuthProvider, signInWithCredential } from "firebase/auth";
 import { auth } from "../../Services/Config/Config";
 
 export const LoginScreen = () => {
@@ -24,32 +31,38 @@ export const LoginScreen = () => {
   //   sendVerification,
   //   confirmCode,
   // } = useContext(AuthContext);
+  const bouncyCheckboxRef = useRef(BouncyCheckbox);
 
   const recaptchaVerifier = useRef(null);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [inputCode, setInputCode] = useState("");
-  const [loading,setLoading]=useState(false)
+  const [loading, setLoading] = useState(false);
   const [verificationId, setVerificationId] = useState(null);
+  const [agreeTerms, setAgreeTerms] = useState(false);
   const [user, setUser] = useState(null);
   const [message, setMessage] = useState(null);
+  const CELL_COUNT = 6;
+  const ref = useBlurOnFulfill({ inputCode, cellCount: CELL_COUNT });
+  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
+    inputCode,
+    setInputCode,
+  });
 
   const sendVerification = async (number) => {
-
     const phoneProvider = new PhoneAuthProvider(auth);
     const verificationId = await phoneProvider.verifyPhoneNumber(
       number,
       recaptchaVerifier.current
     );
     setVerificationId(verificationId);
-    setLoading(true)
+    setMessage("A verification message has been sent to your mobile device");
   };
 
   const confirmCode = async (code) => {
     const credential = PhoneAuthProvider.credential(verificationId, code);
     const userCredential = await signInWithCredential(auth, credential);
     setUser(userCredential);
-    setMessage("A verification message has been sent to your mobile device");
-    setLoading(false)
+    setLoading(true);
   };
 
   return (
@@ -81,30 +94,74 @@ export const LoginScreen = () => {
       </View>
       {message && (
         <View style={styles.message}>
-          <Text style={styles.messageText}>hi</Text>
+          <Text style={styles.messageText}>{message}</Text>
         </View>
       )}
-       {loading && (
+      {loading && (
         <View style={styles.message}>
-         <ActivityIndicator size={25} color="#ff5349"/>
+          <ActivityIndicator size={25} color="#ff5349" />
         </View>
       )}
-
 
       <View style={styles.inputView}>
-        <TextInput
-          placeholder="Enter the Confirmation Code"
-          style={styles.numberInput}
-          onChangeText={(value) => setInputCode(value)}
+        <View style={styles.message}>
+          <Text style={{ fontSize: 15 }}>
+            Enter the confirmation code sent to your device
+          </Text>
+        </View>
+        <CodeField
+          ref={ref}
+          {...props}
+          value={inputCode}
+          onChangeText={(text) => setInputCode(text)}
+          cellCount={CELL_COUNT}
+          rootStyle={styles.codeFieldRoot}
           keyboardType="number-pad"
-          textAlign="center"
-          multiline
-          placeholderTextColor="#fff"
+          textContentType="Enter the confirmation code"
+          renderCell={({ index, symbol, isFocused }) => (
+            <Text
+              key={index}
+              style={[styles.cell, isFocused && styles.focusCell]}
+              onLayout={getCellOnLayoutHandler(index)}
+            >
+              {symbol || (isFocused ? <Cursor /> : null)}
+            </Text>
+          )}
         />
       </View>
-      <TouchableOpacity onPress={() => confirmCode(inputCode)}>
-        <Text>Send Verification</Text>
-      </TouchableOpacity>
+      <View style={styles.termsView}>
+        <View style={styles.tc}>
+          <Text style={{ fontSize: 15 }}>
+            I have read and accept the privacy policy and agree that my personal
+            data would be processed
+          </Text>
+        </View>
+        <View style={styles.checkboxView}>
+          <BouncyCheckbox
+            style={{
+              marginTop: 16,
+              borderColor: "#ff5349",
+            }}
+            ref={bouncyCheckboxRef}
+            isChecked={agreeTerms}
+            fillColor="#ff5349"
+            unfillColor="#FFFFFF"
+            disableBuiltInState
+            bounceEffectIn={0.9}
+            bounceEffectOut={1}
+            bouncinessIn={40}
+            onPress={() => setAgreeTerms(!agreeTerms)}
+          />
+        </View>
+      </View>
+      {agreeTerms && (
+        <TouchableOpacity
+          onPress={() => confirmCode(inputCode)}
+          style={styles.proceedButton}
+        >
+          <Text style={styles.buttonText}>Proceed</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
@@ -140,6 +197,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  proceedButton: {
+    marginTop: 50,
+    backgroundColor: "#ff5349",
+    height: 60,
+    width: Dimensions.get("screen").width,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   buttonText: {
     color: "#fff",
   },
@@ -151,6 +217,42 @@ const styles = StyleSheet.create({
   messageText: {
     color: "#00FF00",
     fontSize: 15,
+  },
+  termsView: {
+    alignItems: "center",
+    flexDirection: "row",
+    marginTop: 30,
+  },
+  tc: {
+    width: Dimensions.get("screen").width * 0.9,
+    marginRight: 5,
+  },
+  checkboxView: {
+    width: Dimensions.get("screen").width * 0.1,
+  },
+  root: {
+    flex: 1,
+    padding: 20,
+  },
+  title: {
+    textAlign: "center",
+    fontSize: 30,
+  },
+  codeFieldRoot: {
+    marginTop: 20,
+  },
+  cell: {
+    width: 40,
+    height: 40,
+    lineHeight: 38,
+    fontSize: 24,
+    borderWidth: 2,
+    borderColor: "#00000030",
+    textAlign: "center",
+    borderRadius: 5,
+  },
+  focusCell: {
+    borderColor: "#000",
   },
 });
 
