@@ -97,11 +97,6 @@ export const LoginScreen = () => {
           <Text style={styles.messageText}>{message}</Text>
         </View>
       )}
-      {loading && (
-        <View style={styles.message}>
-          <ActivityIndicator size={25} color="#ff5349" />
-        </View>
-      )}
 
       <View style={styles.inputView}>
         <View style={styles.message}>
@@ -154,6 +149,11 @@ export const LoginScreen = () => {
           />
         </View>
       </View>
+      {loading && (
+        <View style={styles.message}>
+          <ActivityIndicator size={25} color="#ff5349" />
+        </View>
+      )}
       {agreeTerms && (
         <TouchableOpacity
           onPress={() => confirmCode(inputCode)}
@@ -213,6 +213,7 @@ const styles = StyleSheet.create({
     height: 20,
     alignItems: "center",
     justifyContent: "center",
+    marginVertical:15
   },
   messageText: {
     color: "#00FF00",
