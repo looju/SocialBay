@@ -1,8 +1,8 @@
 import React from "react";
 import { Image } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { LoginScreen } from "./../../Features/Screens/LoginScreen";
-import { CarouselScreen } from "../../Features/Screens/CarouselScreen";
+import { LoginScreen } from "../../Features/Screens/Account/LoginScreen";
+import { CarouselScreen } from "../../Features/Screens/Account/CarouselScreen";
 
 const Stack = createStackNavigator();
 

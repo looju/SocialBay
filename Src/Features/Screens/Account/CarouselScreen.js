@@ -13,12 +13,12 @@ export const CarouselScreen = ({ navigation }) => {
   return (
     <ImageBackground
       style={styles.container}
-      source={require("../../../assets/people2.jpg")}
+      source={require("../../../../assets/people2.jpg")}
       resizeMode="cover"
     >
       <View style={styles.iconView}>
         <Image
-          source={require("../../../assets/icon.jpg")}
+          source={require("../../../../assets/icon.jpg")}
           style={styles.image}
         />
       </View>

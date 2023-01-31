@@ -15,11 +15,11 @@ import {
   useClearByFocusCell,
 } from "react-native-confirmation-code-field";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
-import { AuthContext } from "../../Services/Auth/Auth";
+import { AuthContext } from "../../../Services/Auth/Auth";
 import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
-import { firebaseConfig } from "../../Services/Config/Config";
+import { firebaseConfig } from "../../../Services/Config/Config";
 import { PhoneAuthProvider, signInWithCredential } from "firebase/auth";
-import { auth } from "../../Services/Config/Config";
+import { auth } from "../../../Services/Config/Config";
 
 export const LoginScreen = () => {
   // const {
@@ -98,57 +98,62 @@ export const LoginScreen = () => {
         </View>
       )}
 
-      <View style={styles.inputView}>
-        <View style={styles.message}>
-          <Text style={{ fontSize: 15 }}>
-            Enter the confirmation code sent to your device
-          </Text>
+      {verificationId && (
+        <View>
+          <View style={styles.inputView}>
+            <View style={styles.message}>
+              <Text style={{ fontSize: 15 }}>
+                Enter the confirmation code sent to your device
+              </Text>
+            </View>
+            <CodeField
+              ref={ref}
+              {...props}
+              value={inputCode}
+              onChangeText={(text) => setInputCode(text)}
+              cellCount={CELL_COUNT}
+              rootStyle={styles.codeFieldRoot}
+              keyboardType="number-pad"
+              textContentType="Enter the confirmation code"
+              renderCell={({ index, symbol, isFocused }) => (
+                <Text
+                  key={index}
+                  style={[styles.cell, isFocused && styles.focusCell]}
+                  onLayout={getCellOnLayoutHandler(index)}
+                >
+                  {symbol || (isFocused ? <Cursor /> : null)}
+                </Text>
+              )}
+            />
+          </View>
+          <View style={styles.termsView}>
+            <View style={styles.tc}>
+              <Text style={{ fontSize: 15 }}>
+                I have read and accept the privacy policy and agree that my
+                personal data would be processed
+              </Text>
+            </View>
+            <View style={styles.checkboxView}>
+              <BouncyCheckbox
+                style={{
+                  marginTop: 16,
+                  borderColor: "#ff5349",
+                }}
+                ref={bouncyCheckboxRef}
+                isChecked={agreeTerms}
+                fillColor="#ff5349"
+                unfillColor="#FFFFFF"
+                disableBuiltInState
+                bounceEffectIn={0.9}
+                bounceEffectOut={1}
+                bouncinessIn={40}
+                onPress={() => setAgreeTerms(!agreeTerms)}
+              />
+            </View>
+          </View>
         </View>
-        <CodeField
-          ref={ref}
-          {...props}
-          value={inputCode}
-          onChangeText={(text) => setInputCode(text)}
-          cellCount={CELL_COUNT}
-          rootStyle={styles.codeFieldRoot}
-          keyboardType="number-pad"
-          textContentType="Enter the confirmation code"
-          renderCell={({ index, symbol, isFocused }) => (
-            <Text
-              key={index}
-              style={[styles.cell, isFocused && styles.focusCell]}
-              onLayout={getCellOnLayoutHandler(index)}
-            >
-              {symbol || (isFocused ? <Cursor /> : null)}
-            </Text>
-          )}
-        />
-      </View>
-      <View style={styles.termsView}>
-        <View style={styles.tc}>
-          <Text style={{ fontSize: 15 }}>
-            I have read and accept the privacy policy and agree that my personal
-            data would be processed
-          </Text>
-        </View>
-        <View style={styles.checkboxView}>
-          <BouncyCheckbox
-            style={{
-              marginTop: 16,
-              borderColor: "#ff5349",
-            }}
-            ref={bouncyCheckboxRef}
-            isChecked={agreeTerms}
-            fillColor="#ff5349"
-            unfillColor="#FFFFFF"
-            disableBuiltInState
-            bounceEffectIn={0.9}
-            bounceEffectOut={1}
-            bouncinessIn={40}
-            onPress={() => setAgreeTerms(!agreeTerms)}
-          />
-        </View>
-      </View>
+      )}
+
       {loading && (
         <View style={styles.message}>
           <ActivityIndicator size={25} color="#ff5349" />
@@ -213,7 +218,7 @@ const styles = StyleSheet.create({
     height: 20,
     alignItems: "center",
     justifyContent: "center",
-    marginVertical:15
+    marginVertical: 15,
   },
   messageText: {
     color: "#00FF00",

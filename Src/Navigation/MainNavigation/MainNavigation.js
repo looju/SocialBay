@@ -6,5 +6,5 @@ import { AppNavigation } from "../AppNavigation/AppNavigation";
 export const MainNavigation = () => {
   const user=true
 
-return user? <AccountNavigation/> : <AppNavigation/>;
+return user? <AppNavigation/> : <AccountNavigation/>;
 };
