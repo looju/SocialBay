@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Dimensions,
 } from "react-native";
-import React from "react";
+import React, { useRef } from "react";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Swiper from "react-native-deck-swiper";
 
@@ -104,6 +104,8 @@ export const HomeScreen = () => {
     },
   ];
 
+  const swipeRef = useRef(null);
+
   const RenderCard = ({ item }) => (
     <View style={styles.overview}>
       <View style={styles.card}>
@@ -150,6 +152,7 @@ export const HomeScreen = () => {
           cards={dummyData}
           keyExtractor={(card) => card.id}
           renderCard={(card) => <RenderCard item={card} />}
+          ref={swipeRef}
           infinite
           showSecondCard
           verticalSwipe={false}
@@ -197,6 +200,24 @@ export const HomeScreen = () => {
             },
           }}
         />
+      </View>
+      <View style={styles.iconView}>
+        <TouchableOpacity
+          style={styles.passIcon}
+          onPress={() => swipeRef.current.swipeLeft()}
+        >
+          <MaterialCommunityIcons
+            size={35}
+            color="#FF0000"
+            name="window-close"
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.matchIcon}
+          onPress={() => swipeRef.current.swipeRight()}
+        >
+          <MaterialCommunityIcons size={35} color="#00FF00" name="heart" />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -299,5 +320,27 @@ const styles = StyleSheet.create({
   occupationText: {
     fontSize: 15,
     fontWeight: "300",
+  },
+  iconView: {
+    top: Dimensions.get("screen").height * 0.8,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+  },
+  passIcon: {
+    backgroundColor: "rgba(	255, 192, 203,0.5)",
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  matchIcon: {
+    backgroundColor: "rgba(0,128,0,0.2)",
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
