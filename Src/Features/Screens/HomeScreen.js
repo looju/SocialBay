@@ -144,8 +144,16 @@ export const HomeScreen = () => {
       <View>
         <Swiper
           cards={dummyData}
+          keyExtractor={(card)=>card.id}
           renderCard={(card) => <RenderCard item={card} />}
           infinite
+          showSecondCard
+          verticalSwipe={false}
+          stackSize={5}
+          cardIndex={0}
+          swipeAnimationDuration={400}
+          stackSeparation={12}
+          animateCardOpacity
         />
       </View>
     </View>
@@ -208,6 +216,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor:"#fff",
     backgroundColor: "#ff0",
+    shadowColor:"#000",
+    shadowOpacity:0.1,
+    shadowRadius:1.5,
+    shadowOffset:{
+      width: 0,
+      height:20
+    },
+    elevation:2
   },
   text: {
     textAlign: "center",
@@ -222,6 +238,14 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "flex-start",
     height: 70,
+    shadowColor:"#000",
+    shadowOpacity:0.1,
+    shadowRadius:1.5,
+    shadowOffset:{
+      width: 0,
+      height:20
+    },
+    elevation:2
   },
   nameText:{
    fontSize:20,
