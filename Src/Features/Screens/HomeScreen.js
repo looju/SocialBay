@@ -22,6 +22,10 @@ export const HomeScreen = () => {
       id: 1,
     },
     {
+      firstname: "Dwayne",
+      lastname: "Johnson",
+      age: 51,
+      occupation: "Actor",
       image:
         "https://c4.wallpaperflare.com/wallpaper/792/640/939/denzel-washington-new-photoshoot-wallpaper-preview.jpg",
       id: 2,
@@ -105,7 +109,7 @@ export const HomeScreen = () => {
       <View style={styles.card}>
         <Image
           source={{ uri: `${item.image}` }}
-          style={{ flex: 1, height: "100%", borderRadius: 10, }}
+          style={{ flex: 1, height: "100%", borderRadius: 10 }}
         />
       </View>
       <View style={styles.details}>
@@ -144,16 +148,54 @@ export const HomeScreen = () => {
       <View>
         <Swiper
           cards={dummyData}
-          keyExtractor={(card)=>card.id}
+          keyExtractor={(card) => card.id}
           renderCard={(card) => <RenderCard item={card} />}
           infinite
           showSecondCard
           verticalSwipe={false}
           stackSize={5}
           cardIndex={0}
-          swipeAnimationDuration={400}
+          swipeAnimationDuration={300}
           stackSeparation={12}
           animateCardOpacity
+          overlayLabels={{
+            right: {
+              element: (
+                <Text style={{ color: "#00FF00", fontSize: 30 }}>MATCH</Text>
+              ),
+              title: "MATCH",
+              style: {
+                wrapper: {
+                  flexDirection: "column",
+                  alignItems: "flex-start",
+                  justifyContent: "flex-start",
+                  marginTop: 30,
+                  marginLeft: 30,
+                },
+              },
+            },
+            left: {
+              element: (
+                <Text style={{ color: "#FF0000", fontSize: 30 }}>PASS</Text>
+              ),
+              title: "NOPE",
+              style: {
+                label: {
+                  backgroundColor: "black",
+                  borderColor: "black",
+                  color: "white",
+                  borderWidth: 1,
+                },
+                wrapper: {
+                  flexDirection: "column",
+                  alignItems: "flex-end",
+                  justifyContent: "flex-start",
+                  marginTop: 30,
+                  marginLeft: -30,
+                },
+              },
+            },
+          }}
         />
       </View>
     </View>
@@ -166,7 +208,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   header: {
-    flex:0.1,
+    flex: 0.1,
     flexDirection: "row",
     alignItems: "flex-start",
     justifyContent: "space-between",
@@ -208,22 +250,21 @@ const styles = StyleSheet.create({
   },
   overview: {
     flex: 1,
-  
   },
   card: {
     flex: 0.8,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor:"#fff",
+    borderColor: "#fff",
     backgroundColor: "#ff0",
-    shadowColor:"#000",
-    shadowOpacity:0.1,
-    shadowRadius:1.5,
-    shadowOffset:{
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 1.5,
+    shadowOffset: {
       width: 0,
-      height:20
+      height: 20,
     },
-    elevation:2
+    elevation: 2,
   },
   text: {
     textAlign: "center",
@@ -238,25 +279,25 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "flex-start",
     height: 70,
-    shadowColor:"#000",
-    shadowOpacity:0.1,
-    shadowRadius:1.5,
-    shadowOffset:{
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 1.5,
+    shadowOffset: {
       width: 0,
-      height:20
+      height: 20,
     },
-    elevation:2
+    elevation: 2,
   },
-  nameText:{
-   fontSize:20,
-   fontWeight:"500"
+  nameText: {
+    fontSize: 20,
+    fontWeight: "500",
   },
-  ageText:{
-   fontSize:25,
-   fontWeight:"bold"
+  ageText: {
+    fontSize: 25,
+    fontWeight: "bold",
   },
-  occupationText:{
-    fontSize:15,
-    fontWeight:"300"
-  }
+  occupationText: {
+    fontSize: 15,
+    fontWeight: "300",
+  },
 });
