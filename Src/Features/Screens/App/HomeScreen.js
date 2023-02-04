@@ -10,7 +10,7 @@ import React, { useRef } from "react";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Swiper from "react-native-deck-swiper";
 
-export const HomeScreen = () => {
+export const HomeScreen = ({ navigation }) => {
   const dummyData = [
     {
       firstname: "Dwayne",
@@ -132,18 +132,24 @@ export const HomeScreen = () => {
         <TouchableOpacity style={styles.imageView}>
           <Image
             style={styles.image}
-            source={require("../../../assets/sample.jpg")}
+            source={require("../../../../assets/sample.jpg")}
             resizeMode="cover"
           />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.logoView}>
+        <TouchableOpacity
+          style={styles.logoView}
+          onPress={() => navigation.navigate("Profile")}
+        >
           <Image
             style={styles.logo}
-            source={require("../../../assets/icon.jpg")}
+            source={require("../../../../assets/icon.jpg")}
             resizeMode="cover"
           />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.chatLogoView}>
+        <TouchableOpacity
+          style={styles.chatLogoView}
+          onPress={() => navigation.navigate("Chat")}
+        >
           <MaterialCommunityIcons size={35} color="#000" name="wechat" />
         </TouchableOpacity>
       </View>
