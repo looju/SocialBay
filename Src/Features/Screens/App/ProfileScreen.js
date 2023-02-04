@@ -1,4 +1,11 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TextInput,
+  Dimensions,
+} from "react-native";
 import React from "react";
 
 export const ProfileScreen = () => {
@@ -16,7 +23,19 @@ export const ProfileScreen = () => {
         </View>
       </View>
       <View style={styles.inputStyle}>
-        <Text style={styles.dirText}>hii</Text>
+        <Text style={styles.dirText}>Step 1: The profile pic</Text>
+        <TextInput placeholder="Enter a photo url" style={styles.placeholder} />
+      </View>
+      <View style={styles.inputStyle}>
+        <Text style={styles.dirText}>Step 2: The job</Text>
+        <TextInput
+          placeholder="Enter your occupation"
+          style={styles.placeholder}
+        />
+      </View>
+      <View style={styles.inputStyle}>
+        <Text style={styles.dirText}>Step 3:The age</Text>
+        <TextInput placeholder="Enter your age" style={styles.placeholder} />
       </View>
     </View>
   );
@@ -37,12 +56,25 @@ const styles = StyleSheet.create({
   },
   textStyles: {
     fontFamily: " BebasNeue_400Regular",
-    fontSize:20,
-    fontWeight:"900",
+    fontSize: 20,
+    fontWeight: "900",
   },
-  inputStyle:{
-    backgroundColor:"#ff0",
-    alignItems:"center",
-
-  }
+  textView: {
+    right: 15,
+  },
+  inputStyle: {
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    height: 100,
+  },
+  dirText: {
+    color: "#FF0000",
+    fontSize: 15,
+  },
+  placeholder: {
+    width: "100%",
+    height: 70,
+    alignItems: "center",
+    left: Dimensions.get("screen").width * 0.35,
+  },
 });
