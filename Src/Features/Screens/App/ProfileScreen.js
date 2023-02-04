@@ -5,10 +5,17 @@ import {
   Image,
   TextInput,
   Dimensions,
+  TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 
 export const ProfileScreen = () => {
+  const [image, setImage] = useState(null);
+  const [job, setJob] = useState(null);
+  const [age, setAge] = useState(null);
+
+  const incompleteForm = !image || !job || !age;
+
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
@@ -24,19 +31,43 @@ export const ProfileScreen = () => {
       </View>
       <View style={styles.inputStyle}>
         <Text style={styles.dirText}>Step 1: The profile pic</Text>
-        <TextInput placeholder="Enter a photo url" style={styles.placeholder} />
-      </View>
-      <View style={styles.inputStyle}>
-        <Text style={styles.dirText}>Step 2: The job</Text>
         <TextInput
-          placeholder="Enter your occupation"
+          placeholder="Enter a photo url"
           style={styles.placeholder}
+          value={image}
+          onChangeText={(text) => setImage(text)}
         />
       </View>
       <View style={styles.inputStyle}>
-        <Text style={styles.dirText}>Step 3:The age</Text>
-        <TextInput placeholder="Enter your age" style={styles.placeholder} />
+        <View style={styles.inputTextView}>
+          <Text style={styles.dirText}>Step 2: The job</Text>
+        </View>
+
+        <TextInput
+          placeholder="Enter your occupation"
+          style={styles.placeholder}
+          value={job}
+          onChangeText={(text) => setJob(text)}
+        />
       </View>
+      <View style={styles.inputStyle}>
+        <View style={styles.inputTextView}>
+          <Text style={styles.dirText}>Step 3:The age</Text>
+        </View>
+
+        <TextInput
+          placeholder="Enter your age"
+          style={styles.placeholder}
+          value={age}
+          onChangeText={(text) => setAge(text)}
+        />
+      </View>
+      <TouchableOpacity
+        style={incompleteForm ? styles.disabledButton : styles.button}
+        disabled={incompleteForm}
+      >
+        <Text style={styles.buttonText}>Update profile</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -67,6 +98,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     height: 100,
   },
+  inputTextView: {
+    right: 10,
+  },
   dirText: {
     color: "#FF0000",
     fontSize: 15,
@@ -76,5 +110,30 @@ const styles = StyleSheet.create({
     height: 70,
     alignItems: "center",
     left: Dimensions.get("screen").width * 0.35,
+  },
+  button: {
+    backgroundColor: "#FF0000",
+    backfaceVisibility: "hidden",
+    width: Dimensions.get("screen").width * 0.7,
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 5,
+    left: Dimensions.get("screen").width * 0.15,
+    top: Dimensions.get("screen").height * 0.25,
+  },
+  disabledButton: {
+    backgroundColor: "#808080",
+    backfaceVisibility: "hidden",
+    width: Dimensions.get("screen").width * 0.7,
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 5,
+    left: Dimensions.get("screen").width * 0.15,
+    top: Dimensions.get("screen").height * 0.25,
+  },
+  buttonText: {
+    color: "#fff",
   },
 });
