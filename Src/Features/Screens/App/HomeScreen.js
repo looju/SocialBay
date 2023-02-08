@@ -6,8 +6,14 @@ import {
   StyleSheet,
   Dimensions,
 } from "react-native";
-import React, { useRef, useState, useLayoutEffect,useContext } from "react";
-import { onSnapshot } from "firebase/firestore";
+import React, {
+  useRef,
+  useState,
+  useLayoutEffect,
+  useContext,
+  useEffect,
+} from "react";
+import { onSnapshot, doc, collection } from "firebase/firestore";
 import { db } from "../../../Services/Config/Config";
 import { AuthContext } from "../../../Services/Auth/Auth";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -16,7 +22,7 @@ import Lottie from "lottie-react-native";
 
 export const HomeScreen = ({ navigation }) => {
   const [profiles, setProfiles] = useState([]);
-  const {user}=useContext(AuthContext)
+  const { user } = useContext(AuthContext);
   const dummyData = [
     {
       firstname: "Dwayne",
@@ -111,15 +117,29 @@ export const HomeScreen = ({ navigation }) => {
   ];
 
   useLayoutEffect(() => {
-    onSnapshot(doc(db, "Users",user.user.uid)
-    .then(snapshot =>{
-      if(!snapshot.exists()){
-        navigation.navigate("Profile")
+    onSnapshot(doc(db, "Users", user.user.uid), (snapshot) => {
+      if (!snapshot.exists()) {
+        navigation.navigate("Profile");
       }
-    })
-  )
+    });
+  }, []);
 
-}, []);
+  useEffect(() => {
+    let unsub;
+
+    const fetchCards = async () => {
+      unsub = onSnapshot(collection(db, "Users"), (snapshot) => {
+        setProfiles(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }))
+        );
+      });
+    };
+
+    fetchCards();
+  }, []);
 
   const swipeRef = useRef(null);
 

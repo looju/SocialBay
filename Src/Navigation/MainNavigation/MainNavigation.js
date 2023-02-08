@@ -7,5 +7,5 @@ import { AuthContext } from "../../Services/Auth/Auth";
 export const MainNavigation = () => {
   const {user}=useContext(AuthContext)
 
-return !user? <AppNavigation/> : <AccountNavigation/>;
+return user? <AppNavigation/> : <AccountNavigation/>;
 };
