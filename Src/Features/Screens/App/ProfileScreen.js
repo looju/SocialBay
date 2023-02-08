@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
+import { setDoc, doc, serverTimestamp } from "firebase/firestore";
+import { db } from "../../../Services/Config/Config";
 
 export const ProfileScreen = () => {
   const [image, setImage] = useState(null);
@@ -15,6 +17,22 @@ export const ProfileScreen = () => {
   const [age, setAge] = useState(null);
 
   const incompleteForm = !image || !job || !age;
+
+  const updateUserProfile = () => {
+    setDoc(doc(db, "Users", user.uid), {
+      id: user.uid,
+      photo: image,
+      occupation: job,
+      Age: age,
+      timestamp: serverTimestamp(),
+    })
+      .then(() => navigation.goBack())
+      .catch((error) =>
+        console.log(
+          "Problem updating user profile at ProfileScreen.js: " + error
+        )
+      );
+  };
 
   return (
     <View style={styles.container}>
@@ -29,39 +47,47 @@ export const ProfileScreen = () => {
           <Text style={styles.textStyles}>Socialbay</Text>
         </View>
       </View>
-      <View style={styles.inputStyle}>
-        <Text style={styles.dirText}>Step 1: The profile pic</Text>
-        <TextInput
-          placeholder="Enter a photo url"
-          style={styles.placeholder}
-          value={image}
-          onChangeText={(text) => setImage(text)}
-        />
-      </View>
-      <View style={styles.inputStyle}>
-        <View style={styles.inputTextView}>
-          <Text style={styles.dirText}>Step 2: The job</Text>
+      <View style={styles.inputView}>
+        <View style={styles.inputStyle}>
+          <Text style={styles.dirText}>Step 1: The profile pic</Text>
+          <TextInput
+            placeholder="Enter a photo url"
+            style={styles.placeholder}
+            value={image}
+            onChangeText={(text) => setImage(text)}
+            keyboardType="url"
+          />
         </View>
+        <View style={styles.inputStyle}>
+          <View style={styles.inputTextView}>
+            <Text style={styles.dirText}>Step 2: The job</Text>
+          </View>
 
-        <TextInput
-          placeholder="Enter your occupation"
-          style={styles.placeholder}
-          value={job}
-          onChangeText={(text) => setJob(text)}
-        />
-      </View>
-      <View style={styles.inputStyle}>
-        <View style={styles.inputTextView}>
-          <Text style={styles.dirText}>Step 3:The age</Text>
+          <TextInput
+            placeholder="Enter your occupation"
+            style={styles.placeholder}
+            value={job}
+            onChangeText={(text) => setJob(text)}
+            keyboardType="default"
+            keyboardAppearance="light"
+          />
         </View>
+        <View style={styles.inputStyle}>
+          <View style={styles.inputTextView}>
+            <Text style={styles.dirText}>Step 3:The age</Text>
+          </View>
 
-        <TextInput
-          placeholder="Enter your age"
-          style={styles.placeholder}
-          value={age}
-          onChangeText={(text) => setAge(text)}
-        />
+          <TextInput
+            placeholder="Enter your age"
+            style={styles.placeholder}
+            value={age}
+            onChangeText={(text) => setAge(text)}
+            maxLength={2}
+            keyboardType="phone-pad"
+          />
+        </View>
       </View>
+
       <TouchableOpacity
         style={incompleteForm ? styles.disabledButton : styles.button}
         disabled={incompleteForm}
@@ -89,6 +115,9 @@ const styles = StyleSheet.create({
     fontFamily: " BebasNeue_400Regular",
     fontSize: 20,
     fontWeight: "900",
+  },
+  inputView: {
+    marginTop: 20,
   },
   textView: {
     right: 15,

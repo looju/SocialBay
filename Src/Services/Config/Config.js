@@ -1,5 +1,8 @@
 import { getAuth } from "firebase/auth";
 import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+
+
 export const firebaseConfig = {
   apiKey: "AIzaSyAXs2NhSI13hhBT6VvSmoKSx6jEWD_Usf4",
   authDomain: "socialbay-e301a.firebaseapp.com",
@@ -11,3 +14,4 @@ export const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
+export const db=getFirestore()
