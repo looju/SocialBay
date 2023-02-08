@@ -27,16 +27,16 @@ export const LoginScreen = () => {
 
   const recaptchaVerifier = useRef(null);
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [inputCode, setInputCode] = useState("");
+  const [value, setValue] = useState("");
   const [loading, setLoading] = useState(false);
   const [verificationId, setVerificationId] = useState(null);
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [message, setMessage] = useState(null);
   const CELL_COUNT = 6;
-  const ref = useBlurOnFulfill({ inputCode, cellCount: CELL_COUNT });
+  const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
-    inputCode,
-    setInputCode,
+    value,
+    setValue,
   });
 
   const sendVerification = async (number) => {
@@ -54,7 +54,9 @@ export const LoginScreen = () => {
     const userCredential = await signInWithCredential(auth, credential);
     setUser(userCredential);
     setLoading(true);
+   
   };
+
 
   return (
     <View style={styles.container}>
@@ -100,8 +102,8 @@ export const LoginScreen = () => {
             <CodeField
               ref={ref}
               {...props}
-              value={inputCode}
-              onChangeText={(text) => setInputCode(text)}
+              value={value}
+              onChangeText={(text) => setValue(text)}
               cellCount={CELL_COUNT}
               rootStyle={styles.codeFieldRoot}
               keyboardType="number-pad"
@@ -152,7 +154,7 @@ export const LoginScreen = () => {
       )}
       {agreeTerms && (
         <TouchableOpacity
-          onPress={() => confirmCode(inputCode)}
+          onPress={() => confirmCode(value)}
           style={styles.proceedButton}
         >
           <Text style={styles.buttonText}>Proceed</Text>

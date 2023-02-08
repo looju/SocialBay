@@ -6,11 +6,17 @@ import {
   StyleSheet,
   Dimensions,
 } from "react-native";
-import React, { useRef } from "react";
+import React, { useRef, useState, useLayoutEffect,useContext } from "react";
+import { onSnapshot } from "firebase/firestore";
+import { db } from "../../../Services/Config/Config";
+import { AuthContext } from "../../../Services/Auth/Auth";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Swiper from "react-native-deck-swiper";
+import Lottie from "lottie-react-native";
 
 export const HomeScreen = ({ navigation }) => {
+  const [profiles, setProfiles] = useState([]);
+  const {user}=useContext(AuthContext)
   const dummyData = [
     {
       firstname: "Dwayne",
@@ -104,6 +110,17 @@ export const HomeScreen = ({ navigation }) => {
     },
   ];
 
+  useLayoutEffect(() => {
+    onSnapshot(doc(db, "Users",user.user.uid)
+    .then(snapshot =>{
+      if(!snapshot.exists()){
+        navigation.navigate("Profile")
+      }
+    })
+  )
+
+}, []);
+
   const swipeRef = useRef(null);
 
   const RenderCard = ({ item }) => (
@@ -122,6 +139,26 @@ export const HomeScreen = ({ navigation }) => {
           <Text style={styles.occupationText}>{item.occupation}</Text>
         </View>
         <Text style={styles.ageText}>{item.age}</Text>
+      </View>
+    </View>
+  );
+
+  const NoCard = () => (
+    <View style={styles.overview}>
+      <View style={styles.noCard}>
+        <View style={styles.displayView}>
+          <Text style={{ color: "#000", fontSize: 20 }}>
+            No profile to load
+          </Text>
+          <Lottie
+            loop
+            autoPlay
+            source={require("../../../../assets/crying.json")}
+            width={150}
+            heigth={150}
+            style={{ left: 50, top: 10 }}
+          />
+        </View>
       </View>
     </View>
   );
@@ -155,9 +192,11 @@ export const HomeScreen = ({ navigation }) => {
       </View>
       <View>
         <Swiper
-          cards={dummyData}
-          keyExtractor={(card) => card.id}
-          renderCard={(card) => <RenderCard item={card} />}
+          cards={profiles}
+          // keyExtractor={(card) => card.id}
+          renderCard={(card) =>
+            card ? <RenderCard item={card} /> : <NoCard />
+          }
           ref={swipeRef}
           infinite
           showSecondCard
@@ -293,6 +332,21 @@ const styles = StyleSheet.create({
     },
     elevation: 2,
   },
+  noCard: {
+    flex: 0.8,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#FF0000",
+    backgroundColor: "#fff",
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 1.5,
+    shadowOffset: {
+      width: 0,
+      height: 20,
+    },
+    elevation: 2,
+  },
   text: {
     textAlign: "center",
     fontSize: 50,
@@ -314,6 +368,8 @@ const styles = StyleSheet.create({
       height: 20,
     },
     elevation: 2,
+    alignItems: "center",
+    justifyContent: "space-evenly",
   },
   nameText: {
     fontSize: 20,
@@ -348,5 +404,12 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     alignItems: "center",
     justifyContent: "center",
+  },
+  displayView: {
+    backgroundColor: "#fff",
+    width: "100%",
+    height: 200,
+    alignItems: "center",
+    top: "25%",
   },
 });

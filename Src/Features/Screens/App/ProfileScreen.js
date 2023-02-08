@@ -12,7 +12,7 @@ import { AuthContext } from "../../../Services/Auth/Auth";
 import { setDoc, doc, serverTimestamp } from "firebase/firestore";
 import { db } from "../../../Services/Config/Config";
 
-export const ProfileScreen = () => {
+export const ProfileScreen = ({navigation}) => {
   const [userName, setUserName] = useState(null);
   const [image, setImage] = useState(null);
   const [job, setJob] = useState(null);
@@ -20,11 +20,11 @@ export const ProfileScreen = () => {
 
   const { user } = useContext(AuthContext);
 
-  const incompleteForm = !image || !job || !age;
+  const incompleteForm = !userName || !image || !job || !age;
 
   const updateUserProfile = () => {
-    setDoc(doc(db, "Users", user.uid), {
-      id: user.uid,
+    setDoc(doc(db, "Users", user.user.uid), {
+      id: user.user.uid,
       name: userName,
       photo: image,
       occupation: job,
@@ -58,7 +58,7 @@ export const ProfileScreen = () => {
           <TextInput
             placeholder="Enter a username"
             style={styles.placeholder}
-            value={image}
+            value={userName}
             onChangeText={(text) => setUserName(text)}
             keyboardType="url"
           />
