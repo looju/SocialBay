@@ -25,8 +25,7 @@ export const HomeScreen = ({ navigation }) => {
   const { user } = useContext(AuthContext);
   const dummyData = [
     {
-      firstname: "Dwayne",
-      lastname: "Johnson",
+      username: "Dwayne",
       age: 51,
       occupation: "Actor",
       image:
@@ -34,8 +33,7 @@ export const HomeScreen = ({ navigation }) => {
       id: 1,
     },
     {
-      firstname: "Dwayne",
-      lastname: "Johnson",
+      username: "Dwayne",
       age: 51,
       occupation: "Actor",
       image:
@@ -43,8 +41,7 @@ export const HomeScreen = ({ navigation }) => {
       id: 2,
     },
     {
-      firstname: "Dwayne",
-      lastname: "Johnson",
+      username: "Dwayne",
       age: 51,
       occupation: "Actor",
       image:
@@ -52,8 +49,7 @@ export const HomeScreen = ({ navigation }) => {
       id: 3,
     },
     {
-      firstname: "Dwayne",
-      lastname: "Johnson",
+      username: "Dwayne",
       age: 51,
       occupation: "Actor",
       image:
@@ -61,8 +57,7 @@ export const HomeScreen = ({ navigation }) => {
       id: 4,
     },
     {
-      firstname: "Dwayne",
-      lastname: "Johnson",
+      username: "Dwayne",
       age: 51,
       occupation: "Actor",
       image:
@@ -70,8 +65,7 @@ export const HomeScreen = ({ navigation }) => {
       id: 5,
     },
     {
-      firstname: "Dwayne",
-      lastname: "Johnson",
+      username: "Dwayne",
       age: 51,
       occupation: "Actor",
       image:
@@ -79,8 +73,7 @@ export const HomeScreen = ({ navigation }) => {
       id: 6,
     },
     {
-      firstname: "Dwayne",
-      lastname: "Johnson",
+      username: "Dwayne",
       age: 51,
       occupation: "Actor",
       image:
@@ -88,8 +81,7 @@ export const HomeScreen = ({ navigation }) => {
       id: 7,
     },
     {
-      firstname: "Dwayne",
-      lastname: "Johnson",
+      username: "Dwayne",
       age: 51,
       occupation: "Actor",
       image:
@@ -97,8 +89,7 @@ export const HomeScreen = ({ navigation }) => {
       id: 8,
     },
     {
-      firstname: "Dwayne",
-      lastname: "Johnson",
+      username: "Dwayne",
       age: 51,
       occupation: "Actor",
       image:
@@ -106,8 +97,7 @@ export const HomeScreen = ({ navigation }) => {
       id: 9,
     },
     {
-      firstname: "Dwayne",
-      lastname: "Johnson",
+      username: "Dwayne",
       age: 51,
       occupation: "Actor",
       image:
@@ -130,15 +120,18 @@ export const HomeScreen = ({ navigation }) => {
     const fetchCards = async () => {
       unsub = onSnapshot(collection(db, "Users"), (snapshot) => {
         setProfiles(
-          snapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-          }))
+          snapshot.docs
+            .filter((doc) => doc.id !== user.user.uid)
+            .map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            }))
         );
       });
     };
 
     fetchCards();
+    return unsub;
   }, []);
 
   const swipeRef = useRef(null);
@@ -153,12 +146,10 @@ export const HomeScreen = ({ navigation }) => {
       </View>
       <View style={styles.details}>
         <View>
-          <Text style={styles.nameText}>
-            {item.firstname} {item.lastname}
-          </Text>
+          <Text style={styles.nameText}>{item.name}</Text>
           <Text style={styles.occupationText}>{item.occupation}</Text>
         </View>
-        <Text style={styles.ageText}>{item.age}</Text>
+        <Text style={styles.ageText}>{item.Age}</Text>
       </View>
     </View>
   );
@@ -213,7 +204,7 @@ export const HomeScreen = ({ navigation }) => {
       <View>
         <Swiper
           cards={profiles}
-          // keyExtractor={(card) => card.id}
+          keyExtractor={(card) => card.id}
           renderCard={(card) =>
             card ? <RenderCard item={card} /> : <NoCard />
           }
@@ -342,7 +333,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: "#fff",
-    backgroundColor: "#ff0",
+    backgroundColor: "#ff0000",
     shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowRadius: 1.5,
