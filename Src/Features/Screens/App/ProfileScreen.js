@@ -7,20 +7,25 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { AuthContext } from "../../../Services/Auth/Auth";
 import { setDoc, doc, serverTimestamp } from "firebase/firestore";
 import { db } from "../../../Services/Config/Config";
 
 export const ProfileScreen = () => {
+  const [userName, setUserName] = useState(null);
   const [image, setImage] = useState(null);
   const [job, setJob] = useState(null);
   const [age, setAge] = useState(null);
+
+  const { user } = useContext(AuthContext);
 
   const incompleteForm = !image || !job || !age;
 
   const updateUserProfile = () => {
     setDoc(doc(db, "Users", user.uid), {
       id: user.uid,
+      name: userName,
       photo: image,
       occupation: job,
       Age: age,
@@ -49,7 +54,17 @@ export const ProfileScreen = () => {
       </View>
       <View style={styles.inputView}>
         <View style={styles.inputStyle}>
-          <Text style={styles.dirText}>Step 1: The profile pic</Text>
+          <Text style={styles.dirText}>Step 1: The username</Text>
+          <TextInput
+            placeholder="Enter a username"
+            style={styles.placeholder}
+            value={image}
+            onChangeText={(text) => setUserName(text)}
+            keyboardType="url"
+          />
+        </View>
+        <View style={styles.inputStyle}>
+          <Text style={styles.dirText}>Step 2: The profile pic</Text>
           <TextInput
             placeholder="Enter a photo url"
             style={styles.placeholder}
@@ -60,7 +75,7 @@ export const ProfileScreen = () => {
         </View>
         <View style={styles.inputStyle}>
           <View style={styles.inputTextView}>
-            <Text style={styles.dirText}>Step 2: The job</Text>
+            <Text style={styles.dirText}>Step 3: The job</Text>
           </View>
 
           <TextInput
@@ -74,7 +89,7 @@ export const ProfileScreen = () => {
         </View>
         <View style={styles.inputStyle}>
           <View style={styles.inputTextView}>
-            <Text style={styles.dirText}>Step 3:The age</Text>
+            <Text style={styles.dirText}>Step 4:The age</Text>
           </View>
 
           <TextInput
@@ -91,6 +106,7 @@ export const ProfileScreen = () => {
       <TouchableOpacity
         style={incompleteForm ? styles.disabledButton : styles.button}
         disabled={incompleteForm}
+        onPress={() => updateUserProfile()}
       >
         <Text style={styles.buttonText}>Update profile</Text>
       </TouchableOpacity>
@@ -149,7 +165,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 5,
     left: Dimensions.get("screen").width * 0.15,
-    top: Dimensions.get("screen").height * 0.25,
+    top: Dimensions.get("screen").height * 0.1,
   },
   disabledButton: {
     backgroundColor: "#808080",
@@ -160,7 +176,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 5,
     left: Dimensions.get("screen").width * 0.15,
-    top: Dimensions.get("screen").height * 0.25,
+    top: Dimensions.get("screen").height * 0.1,
   },
   buttonText: {
     color: "#fff",

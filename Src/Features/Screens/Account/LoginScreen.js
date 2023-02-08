@@ -22,15 +22,7 @@ import { PhoneAuthProvider, signInWithCredential } from "firebase/auth";
 import { auth } from "../../../Services/Config/Config";
 
 export const LoginScreen = () => {
-  // const {
-  //   error,
-  //   phoneNumber,
-  //   setPhoneNumber,
-  //   inputCode,
-  //   setInputCode,
-  //   sendVerification,
-  //   confirmCode,
-  // } = useContext(AuthContext);
+  const { setUser } = useContext(AuthContext);
   const bouncyCheckboxRef = useRef(BouncyCheckbox);
 
   const recaptchaVerifier = useRef(null);
@@ -39,7 +31,6 @@ export const LoginScreen = () => {
   const [loading, setLoading] = useState(false);
   const [verificationId, setVerificationId] = useState(null);
   const [agreeTerms, setAgreeTerms] = useState(false);
-  const [user, setUser] = useState(null);
   const [message, setMessage] = useState(null);
   const CELL_COUNT = 6;
   const ref = useBlurOnFulfill({ inputCode, cellCount: CELL_COUNT });
