@@ -113,6 +113,7 @@ export const HomeScreen = ({ navigation }) => {
     },
   ];
 
+
   useLayoutEffect(() => {
     onSnapshot(doc(db, "Users", user.user.uid), (snapshot) => {
       if (!snapshot.exists()) {
@@ -120,6 +121,8 @@ export const HomeScreen = ({ navigation }) => {
       }
     });
   }, []);
+
+
 
   useEffect(() => {
     let unsub;
@@ -132,13 +135,26 @@ export const HomeScreen = ({ navigation }) => {
         console.log("Error fetching passed documents: " + error)
       ); //this returns an array of passed users
 
+
+      const swipes = getDocs(collection(db, "Users", user.user.uid, "Swipes"))
+      .then((snapshot) => {
+        snapshot.docs.map((doc) => doc.id);
+      })
+      .catch((error) =>
+        console.log("Error fetching passed documents: " + error)
+      ); //this returns an array of passed users
+
+
+
     const passedUserIds = passes.length > 0 ? passes : ["test array"];
+    const swipedUserIds = swipes.length > 0 ? swipes : ["test array"];
+
 
     const fetchCards = async () => {
       unsub = onSnapshot(
         query(
           collection(db, "Users"),
-          where("id", "not-in", [...passedUserIds])
+          where("id", "not-in", [...passedUserIds,...swipedUserIds])
         ),
         (snapshot) => {
           setProfiles(
@@ -170,7 +186,19 @@ export const HomeScreen = ({ navigation }) => {
     );
   };
 
-  const swipeRight = async () => {};
+  const swipeRight = async (cardIndex) => {
+    if(!profiles[cardIndex]){
+      return
+    }
+
+    const userSwiped = profiles[cardIndex];
+    console.log(`You swiped Match on  ${userSwiped.name}  ${userSwiped.occupation}`)
+
+    setDoc(doc(db,"Users",user.user.uid,"Swipes",userSwiped.id),{
+      userSwiped
+    })
+
+  };
 
   const swipeRef = useRef(null);
 
