@@ -14,6 +14,7 @@ import {
   useBlurOnFulfill,
   useClearByFocusCell,
 } from "react-native-confirmation-code-field";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { AuthContext } from "../../../Services/Auth/Auth";
 import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
@@ -100,7 +101,7 @@ export const LoginScreen = () => {
         </View>
       )}
 
-      {verificationId && (
+      {verificationId ? (
         <View>
           <View style={styles.inputView}>
             <View style={styles.message}>
@@ -140,6 +141,7 @@ export const LoginScreen = () => {
                 style={{
                   marginTop: 16,
                   borderColor: "#ff5349",
+                  borderWidth:1
                 }}
                 ref={bouncyCheckboxRef}
                 isChecked={agreeTerms}
@@ -153,6 +155,10 @@ export const LoginScreen = () => {
               />
             </View>
           </View>
+        </View>
+      ) : (
+        <View style={styles.Indicator}>
+          <ActivityIndicator size={25} color={"#ff5349"} />
         </View>
       )}
 
@@ -261,6 +267,9 @@ const styles = StyleSheet.create({
   },
   focusCell: {
     borderColor: "#000",
+  },
+  Indicator: {
+    marginTop: Dimensions.get("window").height * 0.6,
   },
 });
 
