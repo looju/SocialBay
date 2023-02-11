@@ -13,7 +13,14 @@ import React, {
   useContext,
   useEffect,
 } from "react";
-import { onSnapshot, doc, collection } from "firebase/firestore";
+import {
+  onSnapshot,
+  doc,
+  collection,
+  setDoc,
+  getDocs,
+  where,
+} from "firebase/firestore";
 import { db } from "../../../Services/Config/Config";
 import { AuthContext } from "../../../Services/Auth/Auth";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -117,22 +124,53 @@ export const HomeScreen = ({ navigation }) => {
   useEffect(() => {
     let unsub;
 
-    const fetchCards = async () => {
-      unsub = onSnapshot(collection(db, "Users"), (snapshot) => {
-        setProfiles(
-          snapshot.docs
-            .filter((doc) => doc.id !== user.user.uid)
-            .map((doc) => ({
-              id: doc.id,
-              ...doc.data(),
-            }))
-        );
-      });
-    };
+    const passes = getDocs(collection(db, "Users", user.user.uid, "Passes"))
+      .then((snapshot) => {
+        snapshot.docs.map((doc) => doc.id);
+      })
+      .catch((error) =>
+        console.log("Error fetching passed documents: " + error)
+      ); //this returns an array of passed users
 
+    const passedUserIds = passes.length > 0 ? passes : ["test array"];
+
+    const fetchCards = async () => {
+      unsub = onSnapshot(
+        query(
+          collection(db, "Users"),
+          where("id", "not-in", [...passedUserIds])
+        ),
+        (snapshot) => {
+          setProfiles(
+            snapshot.docs
+              .filter((doc) => doc.id !== user.user.uid)
+              .map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+              }))
+          );
+        }
+      );
+    };
     fetchCards();
     return unsub;
   }, []);
+
+  const swipeLeft = async (cardIndex) => {
+    if (!profiles[cardIndex]) {
+      return;
+    }
+
+    const userSwiped = profiles[cardIndex];
+    console.log(`You swiped Pass on  ${userSwiped.name}`);
+
+    setDoc(
+      doc(db, "Users", user.user.uid, "Passes", userSwiped.id),
+      userSwiped
+    );
+  };
+
+  const swipeRight = async () => {};
 
   const swipeRef = useRef(null);
 
@@ -204,7 +242,6 @@ export const HomeScreen = ({ navigation }) => {
       <View>
         <Swiper
           cards={profiles}
-          keyExtractor={(card) => card.id}
           renderCard={(card) =>
             card ? <RenderCard item={card} /> : <NoCard />
           }
@@ -217,6 +254,12 @@ export const HomeScreen = ({ navigation }) => {
           swipeAnimationDuration={300}
           stackSeparation={12}
           animateCardOpacity
+          onSwipedLeft={(cardIndex) => {
+            swipeLeft(cardIndex);
+          }}
+          onSwipedRight={(cardIndex) => {
+            swipeRight(cardIndex);
+          }}
           overlayLabels={{
             right: {
               element: (
@@ -407,6 +450,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     alignItems: "center",
     justifyContent: "center",
+    bottom: 25,
   },
   matchIcon: {
     backgroundColor: "rgba(0,128,0,0.2)",
@@ -415,6 +459,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     alignItems: "center",
     justifyContent: "center",
+    bottom: 25,
   },
   displayView: {
     backgroundColor: "#fff",

@@ -31,7 +31,7 @@ export const ProfileScreen = ({navigation}) => {
       Age: age,
       timestamp: serverTimestamp(),
     })
-      .then(() => navigation.goBack())
+      .then(() => navigation.navigate("Home"))
       .catch((error) =>
         console.log(
           "Problem updating user profile at ProfileScreen.js: " + error
@@ -68,6 +68,7 @@ export const ProfileScreen = ({navigation}) => {
           <TextInput
             placeholder="Enter a photo url"
             style={styles.placeholder}
+            multiline
             value={image}
             onChangeText={(text) => setImage(text)}
             keyboardType="url"
