@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useRef, useState, useEffect } from "react";
 import {
   Text,
   View,
@@ -22,7 +22,7 @@ import { PhoneAuthProvider, signInWithCredential } from "firebase/auth";
 import { auth } from "../../../Services/Config/Config";
 
 export const LoginScreen = () => {
-  const { setUser } = useContext(AuthContext);
+  const { setUser, user } = useContext(AuthContext);
   const bouncyCheckboxRef = useRef(BouncyCheckbox);
 
   const recaptchaVerifier = useRef(null);
@@ -54,9 +54,18 @@ export const LoginScreen = () => {
     const userCredential = await signInWithCredential(auth, credential);
     setUser(userCredential);
     setLoading(true);
-   
   };
 
+  const storeData = async (value) => {
+    try {
+      const jsonValue = JSON.stringify(value);
+      await AsyncStorage.setItem("userData", jsonValue);
+    } catch (e) {}
+  };
+
+  useEffect(() => {
+    storeData(user);
+  }, []);
 
   return (
     <View style={styles.container}>

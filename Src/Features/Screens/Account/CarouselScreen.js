@@ -7,9 +7,11 @@ import {
   ImageBackground,
   TouchableOpacity,
 } from "react-native";
-import React, { useRef } from "react";
+import { AuthContext } from "../../../Services/Auth/Auth";
+import React, { useRef, useEffect, useContext } from "react";
 
 export const CarouselScreen = ({ navigation }) => {
+ 
   return (
     <ImageBackground
       style={styles.container}

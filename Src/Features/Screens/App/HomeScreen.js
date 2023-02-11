@@ -20,6 +20,7 @@ import {
   setDoc,
   getDocs,
   where,
+  query
 } from "firebase/firestore";
 import { db } from "../../../Services/Config/Config";
 import { AuthContext } from "../../../Services/Auth/Auth";
@@ -113,7 +114,6 @@ export const HomeScreen = ({ navigation }) => {
     },
   ];
 
-
   useLayoutEffect(() => {
     onSnapshot(doc(db, "Users", user.user.uid), (snapshot) => {
       if (!snapshot.exists()) {
@@ -122,39 +122,37 @@ export const HomeScreen = ({ navigation }) => {
     });
   }, []);
 
-
-
   useEffect(() => {
     let unsub;
 
-    const passes = getDocs(collection(db, "Users", user.user.uid, "Passes"))
-      .then((snapshot) => {
-        snapshot.docs.map((doc) => doc.id);
-      })
-      .catch((error) =>
-        console.log("Error fetching passed documents: " + error)
-      ); //this returns an array of passed users
-
-
-      const swipes = getDocs(collection(db, "Users", user.user.uid, "Swipes"))
-      .then((snapshot) => {
-        snapshot.docs.map((doc) => doc.id);
-      })
-      .catch((error) =>
-        console.log("Error fetching passed documents: " + error)
-      ); //this returns an array of passed users
-
-
-
-    const passedUserIds = passes.length > 0 ? passes : ["test array"];
-    const swipedUserIds = swipes.length > 0 ? swipes : ["test array"];
-
-
     const fetchCards = async () => {
+      const passes = await getDocs(
+        collection(db, "Users", user.user.uid, "Passes")
+      )
+        .then((snapshot) => {
+          snapshot.docs.map((doc) => doc.id);
+        })
+        .catch((error) =>
+          console.log("Error fetching passed documents: " + error)
+        ); //this returns an array of passed users
+
+      const swipes = await getDocs(
+        collection(db, "Users", user.user.uid, "Swipes")
+      )
+        .then((snapshot) => {
+          snapshot.docs.map((doc) => doc.id);
+        })
+        .catch((error) =>
+          console.log("Error fetching passed documents: " + error)
+        ); //this returns an array of matched users
+
+      const passedUserIds = passes.length > 0 ? passes : ["test array"];
+      const swipedUserIds = swipes.length > 0 ? swipes : ["test array"];
+
       unsub = onSnapshot(
         query(
           collection(db, "Users"),
-          where("id", "not-in", [...passedUserIds,...swipedUserIds])
+          where("id", "not-in", [...passedUserIds, ...swipedUserIds])
         ),
         (snapshot) => {
           setProfiles(
@@ -170,16 +168,14 @@ export const HomeScreen = ({ navigation }) => {
     };
     fetchCards();
     return unsub;
-  }, []);
+  }, [db]);
 
   const swipeLeft = async (cardIndex) => {
     if (!profiles[cardIndex]) {
       return;
     }
-
     const userSwiped = profiles[cardIndex];
     console.log(`You swiped Pass on  ${userSwiped.name}`);
-
     setDoc(
       doc(db, "Users", user.user.uid, "Passes", userSwiped.id),
       userSwiped
@@ -187,17 +183,18 @@ export const HomeScreen = ({ navigation }) => {
   };
 
   const swipeRight = async (cardIndex) => {
-    if(!profiles[cardIndex]){
-      return
+    if (!profiles[cardIndex]) {
+      return;
     }
 
     const userSwiped = profiles[cardIndex];
-    console.log(`You swiped Match on  ${userSwiped.name}  ${userSwiped.occupation}`)
+    console.log(
+      `You swiped Match on  ${userSwiped.name}  ${userSwiped.occupation}`
+    );
 
-    setDoc(doc(db,"Users",user.user.uid,"Swipes",userSwiped.id),{
-      userSwiped
-    })
-
+    setDoc(doc(db, "Users", user.user.uid, "Swipes", userSwiped.id), {
+      userSwiped,
+    });
   };
 
   const swipeRef = useRef(null);
