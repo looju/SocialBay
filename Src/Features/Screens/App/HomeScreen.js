@@ -199,20 +199,21 @@ export const HomeScreen = ({ navigation }) => {
     getDocs(doc(db, "Users", userSwiped.id, "Swipes", user.user.uid)).then(
       (DocumentSnapshot) => {
         if (DocumentSnapshot.exists()) {
-          //user has matched with you
+          //user has matched with you before you matched with them
           //CREATE A MATCH
-          console.log(`You matched with ${userSwiped.name}`)
+          console.log(`You matched with ${userSwiped.name}`);
+        } else {
+          //you swiped first before the user swiped on you OR you haven't gotten swiped on
+          console.log(
+            `You swiped Match on  ${userSwiped.name}  ${userSwiped.occupation}`
+          );
+
+          setDoc(doc(db, "Users", user.user.uid, "Swipes", userSwiped.id), {
+            userSwiped,
+          });
         }
       }
     );
-
-    console.log(
-      `You swiped Match on  ${userSwiped.name}  ${userSwiped.occupation}`
-    );
-
-    setDoc(doc(db, "Users", user.user.uid, "Swipes", userSwiped.id), {
-      userSwiped,
-    });
   };
 
   const swipeRef = useRef(null);

@@ -55,7 +55,7 @@ export const LoginScreen = () => {
     const userCredential = await signInWithCredential(auth, credential);
     setUser(userCredential)
     try {
-      const jsonValue = JSON.stringify(value);
+      const jsonValue = JSON.stringify(userCredential);
       await AsyncStorage.setItem("userData", jsonValue);
     } catch (e) {
       console.log("problem storing user data " + e);
@@ -68,9 +68,7 @@ export const LoginScreen = () => {
 
  
 
-  useEffect(() => {
-    storeData(user);
-  }, [user]);
+  
 
   return (
     <View style={styles.container}>
