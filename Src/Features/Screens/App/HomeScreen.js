@@ -19,8 +19,9 @@ import {
   collection,
   setDoc,
   getDocs,
+  getDoc,
   where,
-  query
+  query,
 } from "firebase/firestore";
 import { db } from "../../../Services/Config/Config";
 import { AuthContext } from "../../../Services/Auth/Auth";
@@ -122,6 +123,19 @@ export const HomeScreen = ({ navigation }) => {
     });
   }, []);
 
+
+  const swipeLeft = async (cardIndex) => {
+    if (!profiles[cardIndex]) {
+      return;
+    }
+    const userSwiped = profiles[cardIndex];  //contains the object info of the person who you swiped pass on
+    console.log(`You swiped Pass on  ${userSwiped.name}`);
+    setDoc(
+      doc(db, "Users", user.user.uid, "Passes", userSwiped.id),
+      userSwiped
+    );
+  };
+
   useEffect(() => {
     let unsub;
 
@@ -170,17 +184,7 @@ export const HomeScreen = ({ navigation }) => {
     return unsub;
   }, [db]);
 
-  const swipeLeft = async (cardIndex) => {
-    if (!profiles[cardIndex]) {
-      return;
-    }
-    const userSwiped = profiles[cardIndex];
-    console.log(`You swiped Pass on  ${userSwiped.name}`);
-    setDoc(
-      doc(db, "Users", user.user.uid, "Passes", userSwiped.id),
-      userSwiped
-    );
-  };
+  
 
   const swipeRight = async (cardIndex) => {
     if (!profiles[cardIndex]) {
@@ -188,6 +192,14 @@ export const HomeScreen = ({ navigation }) => {
     }
 
     const userSwiped = profiles[cardIndex];
+
+    const loggedInProfiles = await (
+      await getDoc(db, "Users", user.user.uid)
+    ).data(); //this contains the data of the suer in object form
+
+
+    
+
     console.log(
       `You swiped Match on  ${userSwiped.name}  ${userSwiped.occupation}`
     );

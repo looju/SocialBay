@@ -53,20 +53,24 @@ export const LoginScreen = () => {
   const confirmCode = async (code) => {
     const credential = PhoneAuthProvider.credential(verificationId, code);
     const userCredential = await signInWithCredential(auth, credential);
-    setUser(userCredential);
-    setLoading(true);
-  };
-
-  const storeData = async (value) => {
+    setUser(userCredential)
     try {
       const jsonValue = JSON.stringify(value);
       await AsyncStorage.setItem("userData", jsonValue);
-    } catch (e) {}
+    } catch (e) {
+      console.log("problem storing user data " + e);
+    }
+    setLoading(true);
   };
+
+  
+
+
+ 
 
   useEffect(() => {
     storeData(user);
-  }, []);
+  }, [user]);
 
   return (
     <View style={styles.container}>
@@ -140,8 +144,6 @@ export const LoginScreen = () => {
               <BouncyCheckbox
                 style={{
                   marginTop: 16,
-                  borderColor: "#ff5349",
-                  borderWidth:1
                 }}
                 ref={bouncyCheckboxRef}
                 isChecked={agreeTerms}
@@ -158,7 +160,7 @@ export const LoginScreen = () => {
         </View>
       ) : (
         <View style={styles.Indicator}>
-          <ActivityIndicator size={25} color={"#ff5349"} />
+          <ActivityIndicator size={35} color={"#ff5349"} />
         </View>
       )}
 
@@ -211,7 +213,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   proceedButton: {
-    marginTop: 50,
+    marginTop: 40,
     backgroundColor: "#ff5349",
     height: 60,
     width: Dimensions.get("screen").width,
@@ -269,7 +271,7 @@ const styles = StyleSheet.create({
     borderColor: "#000",
   },
   Indicator: {
-    marginTop: Dimensions.get("window").height * 0.6,
+    marginTop: Dimensions.get("window").height * 0.2,
   },
 });
 
