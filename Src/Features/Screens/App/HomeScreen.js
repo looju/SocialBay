@@ -22,6 +22,7 @@ import {
   getDoc,
   where,
   query,
+  DocumentSnapshot,
 } from "firebase/firestore";
 import { db } from "../../../Services/Config/Config";
 import { AuthContext } from "../../../Services/Auth/Auth";
@@ -123,12 +124,11 @@ export const HomeScreen = ({ navigation }) => {
     });
   }, []);
 
-
   const swipeLeft = async (cardIndex) => {
     if (!profiles[cardIndex]) {
       return;
     }
-    const userSwiped = profiles[cardIndex];  //contains the object info of the person who you swiped pass on
+    const userSwiped = profiles[cardIndex]; //contains the object info of the person who you swiped pass on
     console.log(`You swiped Pass on  ${userSwiped.name}`);
     setDoc(
       doc(db, "Users", user.user.uid, "Passes", userSwiped.id),
@@ -184,8 +184,6 @@ export const HomeScreen = ({ navigation }) => {
     return unsub;
   }, [db]);
 
-  
-
   const swipeRight = async (cardIndex) => {
     if (!profiles[cardIndex]) {
       return;
@@ -197,8 +195,16 @@ export const HomeScreen = ({ navigation }) => {
       await getDoc(db, "Users", user.user.uid)
     ).data(); //this contains the data of the suer in object form
 
-
-    
+    // checking user documents for a swiped user and then accessing the swipes document of the swiped user to see if your id is present, meaning he has matched with you
+    getDocs(doc(db, "Users", userSwiped.id, "Swipes", user.user.uid)).then(
+      (DocumentSnapshot) => {
+        if (DocumentSnapshot.exists()) {
+          //user has matched with you
+          //CREATE A MATCH
+          console.log(`You matched with ${userSwiped.name}`)
+        }
+      }
+    );
 
     console.log(
       `You swiped Match on  ${userSwiped.name}  ${userSwiped.occupation}`
