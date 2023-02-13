@@ -23,7 +23,7 @@ import { PhoneAuthProvider, signInWithCredential } from "firebase/auth";
 import { auth } from "../../../Services/Config/Config";
 
 export const LoginScreen = () => {
-  const { setUser, user } = useContext(AuthContext);
+  const { setUser} = useContext(AuthContext);
   const bouncyCheckboxRef = useRef(BouncyCheckbox);
 
   const recaptchaVerifier = useRef(null);

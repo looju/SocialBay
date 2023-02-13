@@ -298,7 +298,7 @@ export const HomeScreen = ({ navigation }) => {
           style={styles.chatLogoView}
           onPress={() => navigation.navigate("Chat")}
         >
-          <MaterialCommunityIcons size={35} color="#ff0000 " name="wechat" />
+          <MaterialCommunityIcons size={40} color={"#ff0000"} name="wechat" />
         </TouchableOpacity>
       </View>
       <View>
