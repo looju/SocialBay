@@ -23,8 +23,10 @@ import {
   where,
   query,
   DocumentSnapshot,
+  serverTimestamp,
 } from "firebase/firestore";
 import { db } from "../../../Services/Config/Config";
+import { generateId } from "../../../Lib/GenerateId";
 import { AuthContext } from "../../../Services/Auth/Auth";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Swiper from "react-native-deck-swiper";
@@ -193,15 +195,31 @@ export const HomeScreen = ({ navigation }) => {
 
     const loggedInProfiles = await (
       await getDoc(db, "Users", user.user.uid)
-    ).data(); //this contains the data of the suer in object form
+    ).data(); //this contains the data of the user in object form
 
     // checking user documents for a swiped user and then accessing the swipes document of the swiped user to see if your id is present, meaning he has matched with you
     getDocs(doc(db, "Users", userSwiped.id, "Swipes", user.user.uid)).then(
       (DocumentSnapshot) => {
         if (DocumentSnapshot.exists()) {
           //user has matched with you before you matched with them
-          //CREATE A MATCH
+          //Add user details to your db collection
           console.log(`You matched with ${userSwiped.name}`);
+          setDoc(doc(db, "Users", user.user.uid, "Swipes", userSwiped.id), {
+            userSwiped,
+          });
+          //CREATE MATCH
+          setDoc(doc(db, "Matches", generateId(user.user.uid, userSwiped.id)), {
+            users: {
+              [user.user.uid]: loggedInProfiles,
+              [userSwiped.id]: userSwiped,
+            },
+            userMatched: [user.user.uid, userSwiped.id],
+            timestamp: serverTimestamp(),
+          });
+          navigation.navigate("MatchScreen", {
+            loggedInProfiles,
+            userSwiped,
+          });
         } else {
           //you swiped first before the user swiped on you OR you haven't gotten swiped on
           console.log(
@@ -280,7 +298,7 @@ export const HomeScreen = ({ navigation }) => {
           style={styles.chatLogoView}
           onPress={() => navigation.navigate("Chat")}
         >
-          <MaterialCommunityIcons size={35} color="#000" name="wechat" />
+          <MaterialCommunityIcons size={35} color="#ff0000 " name="wechat" />
         </TouchableOpacity>
       </View>
       <View>

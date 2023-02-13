@@ -53,7 +53,7 @@ export const LoginScreen = () => {
   const confirmCode = async (code) => {
     const credential = PhoneAuthProvider.credential(verificationId, code);
     const userCredential = await signInWithCredential(auth, credential);
-    setUser(userCredential)
+    setUser(userCredential);
     try {
       const jsonValue = JSON.stringify(userCredential);
       await AsyncStorage.setItem("userData", jsonValue);
@@ -63,12 +63,18 @@ export const LoginScreen = () => {
     setLoading(true);
   };
 
-  
+  const getData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem("userData");
+      jsonValue != null ? setUser(JSON.parse(jsonValue)) : null;
+    } catch (e) {
+      console.log("problem loading user data " + e);
+    }
+  };
 
-
- 
-
-  
+  useEffect(() => {
+    getData();
+  }, []);
 
   return (
     <View style={styles.container}>
