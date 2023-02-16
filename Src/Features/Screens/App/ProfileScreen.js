@@ -12,7 +12,7 @@ import { AuthContext } from "../../../Services/Auth/Auth";
 import { setDoc, doc, serverTimestamp } from "firebase/firestore";
 import { db } from "../../../Services/Config/Config";
 
-export const ProfileScreen = ({navigation}) => {
+export const ProfileScreen = ({ navigation }) => {
   const [userName, setUserName] = useState(null);
   const [image, setImage] = useState(null);
   const [job, setJob] = useState(null);
@@ -51,6 +51,11 @@ export const ProfileScreen = ({navigation}) => {
         <View style={styles.textView}>
           <Text style={styles.textStyles}>Socialbay</Text>
         </View>
+      </View>
+      <View style={styles.welcomeView}>
+        <Text style={styles.welcomeText}>
+          Welcome {user._tokenResponse.phoneNumber}
+        </Text>
       </View>
       <View style={styles.inputView}>
         <View style={styles.inputStyle}>
@@ -181,5 +186,20 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "#fff",
+  },
+  welcomeView: {
+    marginVertical: 10,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  welcomeText: {
+    fontSize: 17,
+    fontWeight: "300",
+    textShadowColor: "#ff0",
+    textShadowOffset: {
+      height: 0.5,
+      width: 0.9,
+    },
+    elevation: 5,
   },
 });

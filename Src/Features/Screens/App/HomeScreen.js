@@ -34,89 +34,9 @@ import Lottie from "lottie-react-native";
 
 export const HomeScreen = ({ navigation }) => {
   const [profiles, setProfiles] = useState([]);
+  const [userMatched, setUserMatched] = useState([]);
+  const [userPassedOn, setUserPassedOn] = useState([]);
   const { user } = useContext(AuthContext);
-  const dummyData = [
-    {
-      username: "Dwayne",
-      age: 51,
-      occupation: "Actor",
-      image:
-        "https://c4.wallpaperflare.com/wallpaper/635/965/145/actor-dwayne-johnson-dwayne-johnson-dwayne-the-rock-johnson-wallpaper-preview.jpg",
-      id: 1,
-    },
-    {
-      username: "Dwayne",
-      age: 51,
-      occupation: "Actor",
-      image:
-        "https://c4.wallpaperflare.com/wallpaper/792/640/939/denzel-washington-new-photoshoot-wallpaper-preview.jpg",
-      id: 2,
-    },
-    {
-      username: "Dwayne",
-      age: 51,
-      occupation: "Actor",
-      image:
-        "https://c4.wallpaperflare.com/wallpaper/500/146/346/leonardo-dicaprio-actor-face-beard-wallpaper-preview.jpg",
-      id: 3,
-    },
-    {
-      username: "Dwayne",
-      age: 51,
-      occupation: "Actor",
-      image:
-        "https://c4.wallpaperflare.com/wallpaper/892/110/435/tom-hanks-actor-face-smile-wallpaper-preview.jpg",
-      id: 4,
-    },
-    {
-      username: "Dwayne",
-      age: 51,
-      occupation: "Actor",
-      image:
-        "https://c4.wallpaperflare.com/wallpaper/227/876/911/kevin-hart-2015-actor-award-wallpaper-preview.jpg",
-      id: 5,
-    },
-    {
-      username: "Dwayne",
-      age: 51,
-      occupation: "Actor",
-      image:
-        "https://c4.wallpaperflare.com/wallpaper/992/351/703/face-jennifer-lawrence-actress-celebrity-wallpaper-preview.jpg",
-      id: 6,
-    },
-    {
-      username: "Dwayne",
-      age: 51,
-      occupation: "Actor",
-      image:
-        "https://c4.wallpaperflare.com/wallpaper/653/423/614/meryl-streep-actress-oscar-celebrity-wallpaper-preview.jpg",
-      id: 7,
-    },
-    {
-      username: "Dwayne",
-      age: 51,
-      occupation: "Actor",
-      image:
-        "https://c4.wallpaperflare.com/wallpaper/514/423/744/amy-adams-face-eyes-celebrity-wallpaper-preview.jpg",
-      id: 8,
-    },
-    {
-      username: "Dwayne",
-      age: 51,
-      occupation: "Actor",
-      image:
-        "https://c4.wallpaperflare.com/wallpaper/305/881/91/4k-photo-jennifer-aniston-wallpaper-preview.jpg",
-      id: 9,
-    },
-    {
-      username: "Dwayne",
-      age: 51,
-      occupation: "Actor",
-      image:
-        "https://c4.wallpaperflare.com/wallpaper/685/113/280/gal-gadot-celebrity-women-portrait-wallpaper-preview.jpg",
-      id: 10,
-    },
-  ];
 
   useLayoutEffect(() => {
     onSnapshot(doc(db, "Users", user.user.uid), (snapshot) => {
@@ -142,9 +62,7 @@ export const HomeScreen = ({ navigation }) => {
     let unsub;
 
     const fetchCards = async () => {
-      const passes = await getDocs(
-        collection(db, "Users", user.user.uid, "Passes")
-      )
+      const passes =getDocs(collection(db, "Users", user.user.uid, "Passes"))
         .then((snapshot) => {
           snapshot.docs.map((doc) => doc.id);
         })
@@ -152,9 +70,7 @@ export const HomeScreen = ({ navigation }) => {
           console.log("Error fetching passed documents: " + error)
         ); //this returns an array of passed users
 
-      const swipes = await getDocs(
-        collection(db, "Users", user.user.uid, "Swipes")
-      )
+      const swipes = getDocs(collection(db, "Users", user.user.uid, "Swipes"))
         .then((snapshot) => {
           snapshot.docs.map((doc) => doc.id);
         })
@@ -194,11 +110,11 @@ export const HomeScreen = ({ navigation }) => {
     const userSwiped = profiles[cardIndex];
 
     const loggedInProfiles = await (
-      await getDoc(db, "Users", user.user.uid)
+      await getDoc(doc(db, "Users", user.user.uid))
     ).data(); //this contains the data of the user in object form
 
     // checking user documents for a swiped user and then accessing the swipes document of the swiped user to see if your id is present, meaning he has matched with you
-    getDocs(doc(db, "Users", userSwiped.id, "Swipes", user.user.uid)).then(
+     getDoc(doc(db, "Users", userSwiped.id, "Swipes", user.user.uid)).then(
       (DocumentSnapshot) => {
         if (DocumentSnapshot.exists()) {
           //user has matched with you before you matched with them
@@ -240,7 +156,7 @@ export const HomeScreen = ({ navigation }) => {
     <View style={styles.overview}>
       <View style={styles.card}>
         <Image
-          source={{ uri: `${item.image}` }}
+          source={{ uri: `${item.photo}` }}
           style={{ flex: 1, height: "100%", borderRadius: 10 }}
         />
       </View>

@@ -1,5 +1,13 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity,Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
 import React from "react";
+import  Lottie  from 'lottie-react-native';
 
 export const MatchScreen = ({ route, navigation }) => {
   const { loggedInProfiles, userSwiped } = route.params;
@@ -11,14 +19,18 @@ export const MatchScreen = ({ route, navigation }) => {
           style={Styles.headerImageStyle}
         />
       </View>
+      <View style={Styles.matchView}>
       <Text style={Styles.matchText}>
         You and {userSwiped.name} have matched each other!
       </Text>
+      </View>
+     
       <View style={Styles.imageView}>
         <Image
           style={Styles.imageStyle}
           source={{ uri: loggedInProfiles.photo }}
         />
+        <Lottie autoPlay speed={0.8} loop source={require('../../../../assets/')}/>
         <Image style={Styles.imageStyle} source={{ uri: userSwiped.photo }} />
       </View>
       <TouchableOpacity
@@ -35,39 +47,43 @@ const Styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "rgba(255,76,48,0.89)",
-    paddingTop: 15,
+   
   },
   headerTitle: {
     justifyContent: "center",
     paddingHorizontal: 10,
-    paddingTop: 20,
+    paddingTop: Dimensions.get("screen").height*0.05,
+    height:Dimensions.get("screen").height*0.5,
   },
   headerImageStyle: {
-    width:Dimensions.get("screen").width,
-height:20,
-
-},
+    width: Dimensions.get("screen").width,
+    height: Dimensions.get("screen").height*0.12,
+  },
+  matchView:{
+    bottom:Dimensions.get("screen").height*0.1,
+  },
   matchText: {
-    marginTop: 5,
     color: "#fff",
     textAlign: "center",
+    fontSize:15
   },
   imageView: {
     flexDirection: "row",
     justifyContent: "space-evenly",
-    marginTop: 5,
+    height:Dimensions.get("screen").height*0.1,
   },
   imageStyle: {
-    height: 32,
-    width: 32,
-    borderRadius: 16,
+    height:120,
+    width: 120,
+    borderRadius: 60,
+    bottom:Dimensions.get("screen").height*0.055
   },
   button: {
     backgroundColor: "#fff",
     margin: 5,
     paddingVertical: 8,
     paddingHorizontal: 10,
-    marginTop: 20,
+    marginTop: Dimensions.get("screen").height*0.1,
     border: 1,
     borderColor: "#fff",
     borderRadius: 5,
