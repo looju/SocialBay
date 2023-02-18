@@ -57,6 +57,7 @@ const Styles = StyleSheet.create({
   },
   lottie: {
     backgroundColor: "#fff",
+    height: Dimensions.get("screen").height * 0.2,
     top: Dimensions.get("screen").height * 0.2,
     alignItems: "center",
     justifyContent: "center",
@@ -99,6 +100,7 @@ const Styles = StyleSheet.create({
     border: 1,
     borderColor: "#fff",
     borderRadius: 5,
+    width: 15,
   },
   buttonText: {
     textAlign: "center",

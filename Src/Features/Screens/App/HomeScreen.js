@@ -175,15 +175,15 @@ export const HomeScreen = ({ navigation }) => {
       <View style={styles.noCard}>
         <View style={styles.displayView}>
           <Text style={{ color: "#000", fontSize: 20 }}>
-            No profile to load
+            Loading profiles
           </Text>
           <Lottie
             loop
             autoPlay
-            source={require("../../../../assets/crying.json")}
-            width={150}
-            heigth={150}
-            style={{ left: 50, top: 10 }}
+            source={require("../../../../assets/loading.json")}
+            width={300}
+            heigth={300}
+            style={{ left: 25, top: 5 }}
           />
         </View>
       </View>

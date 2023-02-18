@@ -1,9 +1,11 @@
 import React from "react";
+import { Image } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { HomeScreen } from "../../Features/Screens/App/HomeScreen";
 import { ChatScreen } from "../../Features/Screens/App/ChatScreen";
 import { ProfileScreen } from "../../Features/Screens/App/ProfileScreen";
 import { MatchScreen } from "../../Features/Screens/App/MatchScreen";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 const Stack = createStackNavigator();
 
@@ -16,7 +18,18 @@ export const AppNavigation = () => {
         options={{ headerShown: false }}
       />
 
-      <Stack.Screen name="Chat" component={ChatScreen} />
+      <Stack.Screen
+        name="Chat"
+        component={ChatScreen}
+        options={{
+          headerBackImage: () => (
+            <Image
+              source={require("../../../assets/backarrow.png")}
+              style={{ height: 25, width: 25, right: 10 }}
+            />
+          ),
+        }}
+      />
 
       <Stack.Screen
         name="Profile"
