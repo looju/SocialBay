@@ -1,4 +1,4 @@
-const GetMatchedUserInfo = (users, userLoggedIn) => {
+export const GetMatchedUserInfo = (users, userLoggedIn) => {
   const newUsers = { ...users };
   delete newUsers[userLoggedIn];
 
