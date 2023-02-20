@@ -1,12 +1,14 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { View, Text, TouchableOpacity, Image } from "react-native";
+import React, { useContext } from "react";
+import { AuthContext } from "../Services/Auth/Auth";
 
-const DisplayChat = () => {
+export const DisplayChat = ({ matchedUser, navigation }) => {
+  const { user } = useContext(AuthContext);
   return (
-    <View>
-      <Text>DisplayChat</Text>
-    </View>
-  )
-}
-
-export default DisplayChat
+    <TouchableOpacity>
+      {/* <Image source={{ uri: `${matchedUser.users.photo}` }} /> */}
+      <Text>hiiiiiiiii</Text>
+    </TouchableOpacity>
+  );
+};
+export default DisplayChat;

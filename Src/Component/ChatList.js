@@ -3,6 +3,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../Services/Auth/Auth";
 import { collection, doc, onSnapshot, where, query } from "firebase/firestore";
 import { db } from "../Services/Config/Config";
+import { DisplayChat } from "./DisplayChat";
 
 export const ChatList = () => {
   const [matches, setMatches] = useState([]);
@@ -27,22 +28,17 @@ export const ChatList = () => {
     [user]
   );
 
+console.log(matches)
 
-
-
-  return (
-    matches.length>0?(
-      <FlatList
+  return matches.length > 0 ? (
+    <FlatList
       data={matches}
-      keyExtractor={item=>item.id}
-      renderItem={(item) => <DisplayChat matchedUser={item}/>}
+      keyExtractor={(item) => item.id}
+      renderItem={(item) => <DisplayChat matchedUser={item} />}
+      style={Styles.container}
     />
-    ):(
-      <View>
-
-      </View>
-    )
-   
+  ) : (
+    <View></View>
   );
 };
 

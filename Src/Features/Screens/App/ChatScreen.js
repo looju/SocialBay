@@ -1,6 +1,5 @@
 import { View, Text, StyleSheet } from "react-native";
 import React from "react";
-import { useTailwind } from "tailwind-rn";
 import { ChatList } from "../../../Component/ChatList";
 
 export const ChatScreen = () => {
