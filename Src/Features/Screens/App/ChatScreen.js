@@ -1,14 +1,18 @@
-import { View, Text } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 import { useTailwind } from "tailwind-rn";
-import { Header } from './../../../Component/Header';
-
+import { ChatList } from "../../../Component/ChatList";
 
 export const ChatScreen = () => {
-
   return (
-    <View>
-      <Header title='Chat'/>
+    <View style={Styles.container}>
+      <ChatList />
     </View>
   );
 };
+
+const Styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});

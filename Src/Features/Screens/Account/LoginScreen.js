@@ -47,7 +47,7 @@ export const LoginScreen = () => {
       recaptchaVerifier.current
     );
     setVerificationId(verificationId);
-    setMessage("A verification message has been sent to your mobile device");
+    setMessage("A verification message has been sent to your device");
   };
 
   const confirmCode = async (code) => {

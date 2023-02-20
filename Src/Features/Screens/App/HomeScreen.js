@@ -62,7 +62,7 @@ export const HomeScreen = ({ navigation }) => {
     let unsub;
 
     const fetchCards = async () => {
-      const passes =getDocs(collection(db, "Users", user.user.uid, "Passes"))
+      const passes = getDocs(collection(db, "Users", user.user.uid, "Passes"))
         .then((snapshot) => {
           snapshot.docs.map((doc) => doc.id);
         })
@@ -114,7 +114,7 @@ export const HomeScreen = ({ navigation }) => {
     ).data(); //this contains the data of the user in object form
 
     // checking user documents for a swiped user and then accessing the swipes document of the swiped user to see if your id is present, meaning he has matched with you
-     getDoc(doc(db, "Users", userSwiped.id, "Swipes", user.user.uid)).then(
+    getDoc(doc(db, "Users", userSwiped.id, "Swipes", user.user.uid)).then(
       (DocumentSnapshot) => {
         if (DocumentSnapshot.exists()) {
           //user has matched with you before you matched with them
@@ -174,17 +174,15 @@ export const HomeScreen = ({ navigation }) => {
     <View style={styles.overview}>
       <View style={styles.noCard}>
         <View style={styles.displayView}>
-          <Text style={{ color: "#000", fontSize: 20 }}>
-            Loading profiles
-          </Text>
-          <Lottie
-            loop
-            autoPlay
-            source={require("../../../../assets/loading.json")}
-            width={300}
-            heigth={300}
-            style={{ left: 25, top: 5 }}
-          />
+          <Text style={{ color: "#000", fontSize: 20 }}>Loading profiles</Text>
+          <View style={styles.lottieView}>
+            <Lottie
+              loop
+              autoPlay
+              source={require("../../../../assets/loading2.json")}
+              style={{ bottom:30, width: 300, height: 300, right: 60 }}
+            />
+          </View>
         </View>
       </View>
     </View>
@@ -378,6 +376,10 @@ const styles = StyleSheet.create({
       height: 20,
     },
     elevation: 2,
+  },
+  lottieView: {
+    width: 50,
+    height: 100,
   },
   text: {
     textAlign: "center",
