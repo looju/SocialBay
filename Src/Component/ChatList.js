@@ -5,8 +5,9 @@ import { collection, doc, onSnapshot, where, query } from "firebase/firestore";
 import { db } from "../Services/Config/Config";
 import { DisplayChat } from "./DisplayChat";
 import Lottie from "lottie-react-native";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-export const ChatList = () => {
+export const ChatList = ({ navigation }) => {
   const [matches, setMatches] = useState([]);
   const { user } = useContext(AuthContext);
 
@@ -41,6 +42,14 @@ export const ChatList = () => {
   ) : (
     <View style={Styles.noMatchedUser}>
       <View style={Styles.lottieTextView}>
+        <MaterialCommunityIcons
+          name="video"
+          size={30}
+          color={"#FF0000"}
+          onPress={() => navigation.navigate("IdScreen")}
+        />
+      </View>
+      <View style={Styles.lottieTextView}>
         <Text style={Styles.lottieText}>No matches yet</Text>
       </View>
       <View>
@@ -72,8 +81,8 @@ const Styles = StyleSheet.create({
     fontSize: 35,
     fontFamily: "Tangerine_400Regular",
   },
-  lottie:{
-    width:Dimensions.get("screen").height * 0.5,
-    height:Dimensions.get("screen").height * 0.5,
-  }
+  lottie: {
+    width: Dimensions.get("screen").height * 0.5,
+    height: Dimensions.get("screen").height * 0.5,
+  },
 });

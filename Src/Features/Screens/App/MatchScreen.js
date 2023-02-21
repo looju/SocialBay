@@ -17,8 +17,8 @@ export const MatchScreen = ({ route, navigation }) => {
         <Lottie
           autoPlay
           loop
-          source={require("../../../../assets/crying.json")}
-          style={{ width: 50, height: 50 }}
+          source={require("../../../../assets/celebration1.json")}
+          style={{ width: 300, height: 300 }}
         />
       </View>
       <View style={Styles.headerTitle}>

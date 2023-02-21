@@ -1,11 +1,16 @@
 import React from "react";
 import { Image } from "react-native";
-import { createStackNavigator } from "@react-navigation/stack";
+import {
+  createStackNavigator,
+  TransitionPresets,
+} from "@react-navigation/stack";
 import { HomeScreen } from "../../Features/Screens/App/HomeScreen";
 import { ChatScreen } from "../../Features/Screens/App/ChatScreen";
 import { ProfileScreen } from "../../Features/Screens/App/ProfileScreen";
 import { MatchScreen } from "../../Features/Screens/App/MatchScreen";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { IdScreen } from "../../Features/Screens/App/IdScreen";
+import { VideoCallScreen } from "../../Features/Screens/App/VideoCallScreen";
+
 
 const Stack = createStackNavigator();
 
@@ -41,6 +46,22 @@ export const AppNavigation = () => {
         name="MatchScreen"
         component={MatchScreen}
         options={{ presentation: "transparentModal", headerShown: false }}
+      />
+      <Stack.Screen
+        name="IdScreen"
+        component={IdScreen}
+        options={{
+          headerShown: false,
+          ...TransitionPresets.FadeFromBottomAndroid,
+        }}
+      />
+      <Stack.Screen
+        name="VideoCallScreen"
+        component={VideoCallScreen}
+        options={{
+          headerShown: false,
+          ...TransitionPresets.ScaleFromCenterAndroid,
+        }}
       />
     </Stack.Navigator>
   );

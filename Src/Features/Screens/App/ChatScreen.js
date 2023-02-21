@@ -2,10 +2,10 @@ import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 import { ChatList } from "../../../Component/ChatList";
 
-export const ChatScreen = () => {
+export const ChatScreen = ({navigation}) => {
   return (
     <View style={Styles.container}>
-      <ChatList />
+      <ChatList navigation={navigation}/>
     </View>
   );
 };
