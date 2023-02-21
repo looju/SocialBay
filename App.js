@@ -20,7 +20,8 @@ export default function App() {
     Oswald_400Regular,
     Anton_400Regular,
     BebasNeue_400Regular,
-    Tangerine_400Regular
+    Tangerine_400Regular,
+    Lato_400Regular
   });
 
   if (!fontsLoaded) {
