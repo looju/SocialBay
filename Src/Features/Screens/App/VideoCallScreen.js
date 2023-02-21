@@ -24,9 +24,19 @@ export const VideoCallScreen = ({ navigation, ...props }) => {
   const [calling, setCalling] = useState(false);
 
   //video srcs
-  const [localStream, setLocalStream] = useState({toURL: () => null});
-  const [remoteStream, setRemoteStream] = useState({toURL: () => null});
-  const [conn, setConn] = useState(new WebSocket('ws://3.20.188.26:8080'));
+  const [localStream, setLocalStream] = useState({ toURL: () => null });
+  const [remoteStream, setRemoteStream] = useState({ toURL: () => null });
+  const [conn, setConn] = useState(new WebSocket("ws://3.20.188.26:8080"));
+
+  const [yourConnection, setYourConnection] = useState(
+    new RTCPeerConnection({
+      iceServers: [
+        { urls: "stun:stun.l.google.com:19302" },
+        { urls: "stun:stun1.l.google.com:19302" },
+        { urls: "stun:stun2.l.google.com:19302" },
+      ],
+    })
+  );
 
   return (
     <View>
