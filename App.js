@@ -19,7 +19,8 @@ export default function App() {
   const [fontsLoaded] = useFonts({
     Oswald_400Regular,
     Anton_400Regular,
-    BebasNeue_400Regular
+    BebasNeue_400Regular,
+    Tangerine_400Regular
   });
 
   if (!fontsLoaded) {
