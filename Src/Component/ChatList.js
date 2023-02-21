@@ -73,6 +73,7 @@ const Styles = StyleSheet.create({
     fontFamily: "Tangerine_400Regular",
   },
   lottie:{
-    
+    width:Dimensions.get("screen").height * 0.5,
+    height:Dimensions.get("screen").height * 0.5,
   }
 });
