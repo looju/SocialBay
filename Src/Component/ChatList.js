@@ -5,7 +5,7 @@ import { collection, doc, onSnapshot, where, query } from "firebase/firestore";
 import { db } from "../Services/Config/Config";
 import { DisplayChat } from "./DisplayChat";
 import Lottie from "lottie-react-native";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+
 
 export const ChatList = ({ navigation }) => {
   const [matches, setMatches] = useState([]);
@@ -41,14 +41,6 @@ export const ChatList = ({ navigation }) => {
     />
   ) : (
     <View style={Styles.noMatchedUser}>
-      <View style={Styles.lottieTextView}>
-        <MaterialCommunityIcons
-          name="video"
-          size={30}
-          color={"#FF0000"}
-          onPress={() => navigation.navigate("IdScreen")}
-        />
-      </View>
       <View style={Styles.lottieTextView}>
         <Text style={Styles.lottieText}>No matches yet</Text>
       </View>
