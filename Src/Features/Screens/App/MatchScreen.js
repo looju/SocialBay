@@ -13,21 +13,28 @@ export const MatchScreen = ({ route, navigation }) => {
   const { loggedInProfiles, userSwiped } = route.params;
   return (
     <View style={Styles.container}>
-      <View style={Styles.lottie}>
-        <Lottie
-          autoPlay
-          loop
-          source={require("../../../../assets/celebration1.json")}
-          style={{ width: 300, height: 300 }}
-        />
-      </View>
       <View style={Styles.headerTitle}>
         <Image
           source={{ uri: "https://links.papareact.com/mg9" }}
           style={Styles.headerImageStyle}
         />
       </View>
+
       <View style={Styles.matchView}>
+        <View style={Styles.lottie}>
+          <Lottie
+            autoPlay
+            loop
+            source={require("../../../../assets/celebration1.json")}
+            style={{ width: 300, height: 300 }}
+          />
+          <Lottie
+            autoPlay
+            loop
+            source={require("../../../../assets/celebration3.json")}
+            style={{ width: 300, height: 300 }}
+          />
+        </View>
         <Text style={Styles.matchText}>
           You and {userSwiped.name} have matched each other!
         </Text>
@@ -53,12 +60,10 @@ export const MatchScreen = ({ route, navigation }) => {
 const Styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "rgba(255,76,48,0.89)",
+    backgroundColor: "rgba(255,76,48,0.8)",
   },
   lottie: {
-    backgroundColor: "#fff",
-    height: Dimensions.get("screen").height * 0.2,
-    top: Dimensions.get("screen").height * 0.2,
+    height: Dimensions.get("screen").height * 0.00005,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -100,7 +105,9 @@ const Styles = StyleSheet.create({
     border: 1,
     borderColor: "#fff",
     borderRadius: 5,
-    width: 15,
+    height: Dimensions.get("screen").height * 0.05,
+    width:  Dimensions.get("screen").width * 0.8,
+    left: Dimensions.get("screen").width * 0.1,
   },
   buttonText: {
     textAlign: "center",

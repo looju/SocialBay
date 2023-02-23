@@ -50,12 +50,7 @@ export const AppNavigation = () => {
         name="Message"
         component={MessageScreen}
         options={{
-          headerBackImage: () => (
-            <Image
-              source={require("../../../assets/backarrow.png")}
-              style={{ height: 25, width: 25, right: 10 }}
-            />
-          ),
+         headerShown:false
         }}
       />
       <Stack.Screen

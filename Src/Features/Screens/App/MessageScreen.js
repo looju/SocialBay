@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text, TextInput } from "react-native";
 import React, { useContext } from "react";
 import { GetMatchedUserInfo } from "./../../../Lib/GetMatchedUserInfo";
 import { AuthContext } from "../../../Services/Auth/Auth";
