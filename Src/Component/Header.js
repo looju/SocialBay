@@ -1,22 +1,22 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { useTailwind } from "tailwind-rn";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import Foundation from "react-native-vector-icons/Foundation";
 
-export const Header = ({ title, callEnabled }) => {
+export const Header = ({ title, callEnabled, navigation }) => {
+  const tw = useTailwind();
+
   return (
-    <View style={Styles.header}>
+    <View style={tw("p-2, flex-row, items-center, justify-between")}>
+      <View style={tw("flex, flex-row, items-center")}>
+        <TouchableOpacity style={tw("p-2")} onPress={() => navigation.goBack()}>
+          <Ionicons name="chevron-back-outline" size={25} color={"#ff0000"} />
+        </TouchableOpacity>
+      </View>
       <Text>Header</Text>
     </View>
   );
 };
 
-const Styles = StyleSheet.create({
-  header: {
-    padding: 2,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginTop:10
-  },
-});
+co;

@@ -14,7 +14,12 @@ export const DisplayChat = ({ matchedUser, navigation }) => {
   console.log(matchedUserInfo);
 
   return (
-    <TouchableOpacity style={Styles.userOverview}>
+    <TouchableOpacity
+      style={Styles.userOverview}
+      onPress={() => navigation.navigate("Message",{
+        matchedUser
+      })}
+    >
       <Image
         style={{
           height: 60,
@@ -26,7 +31,7 @@ export const DisplayChat = ({ matchedUser, navigation }) => {
       />
       <View>
         <Text style={Styles.userNameText}>{matchedUser?.name}</Text>
-        <Text>{lastMessage || "Say hi "}</Text>
+        <Text>"Say hi "</Text>
       </View>
     </TouchableOpacity>
   );
@@ -52,8 +57,8 @@ const Styles = StyleSheet.create({
     },
     elevation: 2,
   },
-  userNameText:{
-    fontSize:15,
-    fontWeight:"bold"
-  }
+  userNameText: {
+    fontSize: 15,
+    fontWeight: "bold",
+  },
 });
