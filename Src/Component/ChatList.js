@@ -1,11 +1,10 @@
 import { View, Text, StyleSheet, FlatList, Dimensions } from "react-native";
 import React, { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../Services/Auth/Auth";
-import { collection, doc, onSnapshot, where, query } from "firebase/firestore";
+import { collection,  onSnapshot, where, query } from "firebase/firestore";
 import { db } from "../Services/Config/Config";
 import { DisplayChat } from "./DisplayChat";
 import Lottie from "lottie-react-native";
-
 
 export const ChatList = ({ navigation }) => {
   const [matches, setMatches] = useState([]);
@@ -36,7 +35,9 @@ export const ChatList = ({ navigation }) => {
     <FlatList
       data={matches}
       keyExtractor={(item) => item.id}
-      renderItem={(item) => <DisplayChat matchedUser={item} />}
+      renderItem={(item) => (
+        <DisplayChat matchedUser={item} navigation={navigation} />
+      )}
       style={Styles.container}
     />
   ) : (
