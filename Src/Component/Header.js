@@ -22,7 +22,7 @@ export const Header = ({ title, callEnabled, navigation }) => {
         >
           <Ionicons name="chevron-back-outline" size={30} color={"#ff0000"} />
         </TouchableOpacity>
-        <Text stlye={Styles.userName}>title</Text>
+        <Text stlye={Styles.userName}>{title}</Text>
       </View>
       {callEnabled && (
         <TouchableOpacity>
