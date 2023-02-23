@@ -4,7 +4,10 @@ import {
   TextInput,
   StyleSheet,
   KeyboardAvoidingView,
+  Keyboard,
   Platform,
+  TouchableWithoutFeedback,
+  FlatList,
 } from "react-native";
 import React, { useContext, useState } from "react";
 import { GetMatchedUserInfo } from "./../../../Lib/GetMatchedUserInfo";
@@ -16,11 +19,12 @@ export const MessageScreen = ({ route, navigation }) => {
   const { matchedUser } = route.params;
   const { user } = useContext(AuthContext);
   const [input, setInput] = useState("");
+  const [messages, setMessages] = useState("");
 
   const sendMessage = () => {};
 
   return (
-    <View>
+    <View style={Styles.container}>
       <Header
         navigation={navigation}
         title={GetMatchedUserInfo(matchedUser.users, user.user.uid).name}
@@ -31,6 +35,21 @@ export const MessageScreen = ({ route, navigation }) => {
         style={Styles.container}
         keyboardVerticalOffset={10}
       >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <FlatList
+            data={messages}
+            keyExtractor={(item) => item.id}
+            style={Styles.messageList}
+            renderItem={({ item: message }) =>
+              message.userId === user.user.uid ? (
+                <SenderMessage key={message.id} message={message} />
+              ) : (
+                <ReceiverMessage key={message.id} message={message} />
+              )
+            }
+          />
+        </TouchableWithoutFeedback>
+
         <View style={Styles.inputView}>
           <TextInput
             style={Styles.messageInput}
@@ -59,12 +78,14 @@ const Styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    border: 5,
+    border: 2,
     paddingHorizontal: 5,
     paddingVertical: 3,
     borderColor: "#808080",
+    backgroundColor: "#fff",
   },
   messageInput: {
     height: 10,
   },
+  messageList: {},
 });
