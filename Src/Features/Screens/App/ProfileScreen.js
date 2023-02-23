@@ -59,17 +59,18 @@ export const ProfileScreen = ({ navigation }) => {
       </View>
       <View style={styles.inputView}>
         <View style={styles.inputStyle}>
-          <Text style={styles.dirText}>Step 1: The username</Text>
+          <Text style={styles.dirText}> The username</Text>
           <TextInput
             placeholder="Enter a username"
             style={styles.placeholder}
             value={userName}
             onChangeText={(text) => setUserName(text)}
             keyboardType="url"
+            textAlign="center"
           />
         </View>
         <View style={styles.inputStyle}>
-          <Text style={styles.dirText}>Step 2: The profile pic</Text>
+          <Text style={styles.dirText}>The profile pic</Text>
           <TextInput
             placeholder="Enter a photo url"
             style={styles.placeholder}
@@ -77,11 +78,12 @@ export const ProfileScreen = ({ navigation }) => {
             value={image}
             onChangeText={(text) => setImage(text)}
             keyboardType="url"
+            textAlign="center"
           />
         </View>
         <View style={styles.inputStyle}>
           <View style={styles.inputTextView}>
-            <Text style={styles.dirText}>Step 3: The job</Text>
+            <Text style={styles.dirText}> The job</Text>
           </View>
 
           <TextInput
@@ -91,11 +93,12 @@ export const ProfileScreen = ({ navigation }) => {
             onChangeText={(text) => setJob(text)}
             keyboardType="default"
             keyboardAppearance="light"
+            textAlign="center"
           />
         </View>
         <View style={styles.inputStyle}>
           <View style={styles.inputTextView}>
-            <Text style={styles.dirText}>Step 4:The age</Text>
+            <Text style={styles.dirText}>The age</Text>
           </View>
 
           <TextInput
@@ -105,6 +108,7 @@ export const ProfileScreen = ({ navigation }) => {
             onChangeText={(text) => setAge(text)}
             maxLength={2}
             keyboardType="phone-pad"
+            textAlign="center"
           />
         </View>
       </View>
@@ -146,21 +150,25 @@ const styles = StyleSheet.create({
   },
   inputStyle: {
     alignItems: "center",
-    justifyContent: "space-evenly",
+  
     height: 100,
   },
   inputTextView: {
     right: 10,
   },
   dirText: {
-    color: "#FF0000",
+    color: "#000",
     fontSize: 15,
   },
   placeholder: {
     width: "100%",
-    height: 70,
+    height: 40,
     alignItems: "center",
-    left: Dimensions.get("screen").width * 0.35,
+    borderWidth: 1,
+    borderRadius: 15,
+    borderColor:"#ff0000",
+    alignItems: "center",
+    justifyContent: "center",
   },
   button: {
     backgroundColor: "#FF0000",
@@ -169,9 +177,9 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 5,
+    borderRadius: 10,
     left: Dimensions.get("screen").width * 0.15,
-    top: Dimensions.get("screen").height * 0.1,
+    
   },
   disabledButton: {
     backgroundColor: "#808080",
@@ -180,15 +188,15 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 5,
+    borderRadius: 10,
     left: Dimensions.get("screen").width * 0.15,
-    top: Dimensions.get("screen").height * 0.1,
+    
   },
   buttonText: {
     color: "#fff",
   },
   welcomeView: {
-    marginVertical: 10,
+    marginVertical: 5,
     alignItems: "center",
     justifyContent: "center",
   },

@@ -24,6 +24,10 @@ export const DisplayChat = ({ matchedUser, navigation }) => {
         }}
         source={{ uri: matchedUserInfo?.photo }}
       />
+      <View>
+        <Text style={Styles.userNameText}>{matchedUser?.name}</Text>
+        <Text>{lastMessage || "Say hi "}</Text>
+      </View>
     </TouchableOpacity>
   );
 };
@@ -48,4 +52,8 @@ const Styles = StyleSheet.create({
     },
     elevation: 2,
   },
+  userNameText:{
+    fontSize:15,
+    fontWeight:"bold"
+  }
 });
