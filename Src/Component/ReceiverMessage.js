@@ -4,7 +4,7 @@ import React from "react";
 export const ReceiverMessage = ({ key, message }) => {
   return (
     <View style={Styles.messageView}>
-      <Image style={Styles.image} source={{ uri: message.photo }} />
+      <Image style={Styles.image} source={{ uri: message.photoURL }} />
       <Text style={Styles.text}>{message.message}</Text>
     </View>
   );

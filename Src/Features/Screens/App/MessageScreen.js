@@ -82,6 +82,7 @@ export const MessageScreen = ({ route, navigation }) => {
             data={messages}
             keyExtractor={(item) => item.id}
             style={Styles.messageList}
+            inverted={-1}
             renderItem={({ item: message }) =>
               message.userId === user.user.uid ? (
                 <SenderMessage key={message.id} message={message} />

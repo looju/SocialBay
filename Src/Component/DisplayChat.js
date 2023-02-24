@@ -6,6 +6,7 @@ import { GetMatchedUserInfo } from "../Lib/GetMatchedUserInfo";
 export const DisplayChat = ({ matchedUser, navigation }) => {
   const { user } = useContext(AuthContext);
   const [matchedUserInfo, setMatchedUserInfo] = useState(null);
+  const [lastMessage,setLastMessage] = useState("");
 
   useEffect(() => {
     setMatchedUserInfo(GetMatchedUserInfo(matchedUser.users, user.user.uid));
@@ -31,7 +32,7 @@ export const DisplayChat = ({ matchedUser, navigation }) => {
       />
       <View>
         <Text style={Styles.userNameText}>{matchedUser?.name}</Text>
-        <Text>"Say hi "</Text>
+        <Text>Say hi</Text>
       </View>
     </TouchableOpacity>
   );
