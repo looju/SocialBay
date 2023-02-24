@@ -11,12 +11,21 @@ import {
 } from "react-native";
 import { ReceiverMessage } from "../../../Component/ReceiverMessage";
 import { SenderMessage } from "../../../Component/SenderMessage";
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { GetMatchedUserInfo } from "./../../../Lib/GetMatchedUserInfo";
 import { AuthContext } from "../../../Services/Auth/Auth";
 import { Header } from "../../../Component/Header";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  serverTimestamp,
+  onSnapshot,
+  doc,
+  query,
+  where,
+  orderBy,
+} from "firebase/firestore";
 import { db } from "../../../Services/Config/Config";
 
 export const MessageScreen = ({ route, navigation }) => {
@@ -38,6 +47,23 @@ export const MessageScreen = ({ route, navigation }) => {
         console.log("Error sending message at MessageScreen.js " + error)
       );
   };
+
+  useEffect(
+    () =>
+      onSnapshot(
+        query(doc(db, "Matches", matchedUser.id, "Messages")),
+        orderBy("timeStamp", "desc")
+      ),
+    (snapshot) => {
+      setMessages(
+        snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }))
+      );
+    },
+    [db, matchedUser]
+  );
 
   return (
     <View style={Styles.container}>
