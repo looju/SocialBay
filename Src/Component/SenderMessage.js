@@ -4,7 +4,7 @@ import React from "react";
 export const SenderMessage = ({ key, message }) => {
   return (
     <View style={Styles.messageView}>
-      <Text>{message.message}</Text>
+      <Text style={Styles.text}>{message.message}</Text>
     </View>
   );
 };
@@ -18,5 +18,9 @@ const Styles = StyleSheet.create({
     marginVertical: 2,
     marginHorizontal: 4,
     alignSelf: "flex-start",
+    marginLeft:"auto"
   },
+  text:{
+    color: "#fff"
+  }
 });
