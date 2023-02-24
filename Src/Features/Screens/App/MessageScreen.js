@@ -16,14 +16,23 @@ import { GetMatchedUserInfo } from "./../../../Lib/GetMatchedUserInfo";
 import { AuthContext } from "../../../Services/Auth/Auth";
 import { Header } from "../../../Component/Header";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { db } from "../../../Services/Config/Config";
 
 export const MessageScreen = ({ route, navigation }) => {
-  const { matchedUser } = route.params;
+  const { matchedUser } = route.params; // recall that matchedUser is an array that contains the user matched object values
   const { user } = useContext(AuthContext);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState("");
 
-  const sendMessage = () => {};
+  const sendMessage = async () => {
+    await addDoc(collection(db, "Matches", matchedUser.id, "Messages"), {
+      timeStamp: serverTimestamp(),
+      userId: user.user.uid,
+      userPhoneNumber: user._tokenResponse.phoneNumber,
+      photoURL:matchedUser.users[user.user.uid].photo
+    });
+  };
 
   return (
     <View style={Styles.container}>
