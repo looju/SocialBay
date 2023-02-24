@@ -30,8 +30,13 @@ export const MessageScreen = ({ route, navigation }) => {
       timeStamp: serverTimestamp(),
       userId: user.user.uid,
       userPhoneNumber: user._tokenResponse.phoneNumber,
-      photoURL:matchedUser.users[user.user.uid].photo
-    });
+      photoURL: matchedUser.users[user.user.uid].photo,
+      message: input,
+    })
+      .then(setInput(""))
+      .catch((error) =>
+        console.log("Error sending message at MessageScreen.js " + error)
+      );
   };
 
   return (
