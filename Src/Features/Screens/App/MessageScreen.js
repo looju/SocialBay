@@ -9,6 +9,8 @@ import {
   TouchableWithoutFeedback,
   FlatList,
 } from "react-native";
+import { ReceiverMessage } from "../../../Component/ReceiverMessage";
+import { SenderMessage } from "../../../Component/SenderMessage";
 import React, { useContext, useState } from "react";
 import { GetMatchedUserInfo } from "./../../../Lib/GetMatchedUserInfo";
 import { AuthContext } from "../../../Services/Auth/Auth";
