@@ -2,24 +2,39 @@ import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../Services/Auth/Auth";
 import { GetMatchedUserInfo } from "../Lib/GetMatchedUserInfo";
+import { db } from "../Services/Config/Config";
+import { onSnapshot, orderBy, collection } from "firebase/firestore";
 
 export const DisplayChat = ({ matchedUser, navigation }) => {
   const { user } = useContext(AuthContext);
   const [matchedUserInfo, setMatchedUserInfo] = useState(null);
-  const [lastMessage,setLastMessage] = useState("");
+  const [lastMessage, setLastMessage] = useState("");
 
   useEffect(() => {
     setMatchedUserInfo(GetMatchedUserInfo(matchedUser.users, user.user.uid));
   }, [matchedUser, user]);
+
+  useEffect(
+    () =>
+      onSnapshot(
+        query(collection(db, "Matches", matchedUser.id, "Messages")),
+        orderBy("timeStamp", "desc"),
+        (snapshot) => {
+          setLastMessage(snapshot.docs[0]?.data()?.message);
+        }
+      )[(matchedUser, db)]
+  );
 
   console.log(matchedUserInfo);
 
   return (
     <TouchableOpacity
       style={Styles.userOverview}
-      onPress={() => navigation.navigate("Message",{
-        matchedUser
-      })}
+      onPress={() =>
+        navigation.navigate("Message", {
+          matchedUser,
+        })
+      }
     >
       <Image
         style={{
@@ -32,7 +47,7 @@ export const DisplayChat = ({ matchedUser, navigation }) => {
       />
       <View>
         <Text style={Styles.userNameText}>{matchedUser?.name}</Text>
-        <Text>Say hi</Text>
+        <Text>{lastMessage || "Say hi"}</Text>
       </View>
     </TouchableOpacity>
   );
